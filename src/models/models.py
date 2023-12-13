@@ -35,6 +35,8 @@ class TodoModel(BaseModel):
         },
     )    
     
+
+    
     
 class UserModel(BaseModel):
     """
@@ -47,7 +49,6 @@ class UserModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
     email: str = Field(...)
-    password: str = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -59,6 +60,9 @@ class UserModel(BaseModel):
             }
         },
     )
+    
+class UserInDBModel(UserModel):
+    password: str = Field(...)
     
 class TeamModel(BaseModel):
     """
