@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+  </head>
+  <body>
+    <h1>WebSocket Chat</h1>
+    <h2>Your ID: <span id="ws-id"></span></h2>
+    <h2>Team ID: {{team_id}}</h2>
+    <form action="" onsubmit="sendMessage(event)">
+      {# Message Input #}
+      <input
+        type="text"
+        id="todoTitle"
+        autocomplete="off"
+        placeholder="Title"
+      />
+      <input
+        type="text"
+        id="todoDescription"
+        autocomplete="off"
+        placeholder="Description"
+      />
+      <button>Send</button>
+    </form>
+    <ul id="todos"></ul>
+    <script>
+      var client_id = Date.now();
+      document.querySelector('#ws-id').textContent = client_id;
+      var ws = new WebSocket(
+        `ws://localhost:8000/api/v1/todo/ws/${client_id}/{{team_id}}`
+      );
+      ws.onmessage = function (event) {
+        var todos = document.getElementById('todos');
+
+        try {
+          var todo = JSON.parse(event.data);
+          var todoItem = document.createElement('li');
+          var todoTitle = document.createElement('h3');
+          var todoDescription = document.createElement('p');
+          todoTitle.textContent = todo.title;
+          todoDescription.textContent = todo.description;
+          todoItem.appendChild(todoTitle);
+          todoItem.appendChild(todoDescription);
+          todos.appendChild(todoItem);
+          console.log("Received: '" + event.data + "'");
+        } catch (e) {
+          console.log(event.data);
+        }
+      };
+      function sendMessage(event) {
+        var todoTitle = document.getElementById('todoTitle');
+        var todoDescription = document.getElementById('todoDescription');
+        // To jsson
+        var todo = {
+          title: todoTitle.value,
+          description: todoDescription.value,
+        };
+        // To string
+        var todoString = JSON.stringify(todo);
+        ws.send(todoString);
+        todoTitle.value = '';
+        todoDescription.value = '';
+        event.preventDefault();
+      }
+    </script>
+  </body>
+</html>
