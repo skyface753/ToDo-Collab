@@ -1,3 +1,6 @@
-SECRET = "super-secret-key"
 from fastapi_login import LoginManager
-manager = LoginManager(SECRET, '/login', use_cookie=True)
+from datetime import timedelta
+
+SECRET = "super-secret-key"
+manager = LoginManager(SECRET, '/login', use_cookie=True,
+                       default_expiry=timedelta(minutes=60))

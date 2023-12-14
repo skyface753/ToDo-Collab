@@ -22,9 +22,9 @@ class TodoModel(BaseModel):
     # Relation to the user
     user_id: str = Field(...)
     user_name: Optional[str] = None
-    # Relation to the team
-    team_id: str = Field(...)
-    team_name: Optional[str] = None
+    # Relation to the collection
+    collection_id: str = Field(...)
+    collection_name: Optional[str] = None
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -32,6 +32,8 @@ class TodoModel(BaseModel):
             "example": {
                 "title": "Do the dishes",
                 "description": "It's your turn to do the dishes.",
+                "user_id": "User ID",
+                "collection_id": "Collection ID",
             }
         },
     )
@@ -47,6 +49,7 @@ class UserModel(BaseModel):
     # but provided as `id` in the API requests and responses.
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
+    password: str = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -59,13 +62,10 @@ class UserModel(BaseModel):
     )
 
 
-class UserInDBModel(UserModel):
-    password: str = Field(...)
-
-
-class TeamModel(BaseModel):
+class CollectionModel(BaseModel):
     """
-    Container for a Team record.
+    Container for a Collection record.
+    Collections are used to group todos.
     """
 
     # The primary key for the TodoModel, stored as a `str` on the instance.
@@ -73,34 +73,32 @@ class TeamModel(BaseModel):
     # but provided as `id` in the API requests and responses.
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
-    description: str = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
-                "name": "Team Name",
-                "description": "Team Description",
+                "name": "Collection Name",
             }
         },
     )
 
 
-class UserTeamModel(BaseModel):
+class MembersModel(BaseModel):
     """
-    Relation between a user and a team.
+    Relation between a user and collection.
     """
 
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     user_id: str = Field(...)
-    team_id: str = Field(...)
+    collection_id: str = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
                 "user_id": "User ID",
-                "team_id": "Team ID",
+                "collection_id": "Collection ID",
             }
         },
     )

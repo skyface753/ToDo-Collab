@@ -1,18 +1,21 @@
 from fastapi import WebSocket
 
+
 class aConnection:
-    def __init__(self, websocket: WebSocket, user_id, team_id):
+    def __init__(self, websocket: WebSocket, user_id, collection_id):
         self.websocket = websocket
         self.user_id = user_id
-        self.team_id = team_id
+        self.collection_id = collection_id
+
 
 class ConnectionManager:
     def __init__(self):
         self.active_connections: list[aConnection] = []
 
-    async def connect(self, websocket: WebSocket, user_id, team_id):
+    async def connect(self, websocket: WebSocket, user_id, collection_id):
         await websocket.accept()
-        self.active_connections.append(aConnection(websocket, user_id, team_id))
+        self.active_connections.append(
+            aConnection(websocket, user_id, collection_id))
 
     def disconnect(self, websocket: WebSocket):
         for connection in self.active_connections:
@@ -23,11 +26,10 @@ class ConnectionManager:
     async def send_personal_message(self, message: str, websocket: WebSocket):
         await websocket.send_text(message)
 
-    async def broadcast(self, message: str, team_id: str):
+    async def broadcast(self, message: str, collection_id: str):
         for connection in self.active_connections:
-            if connection.team_id == team_id:
+            if connection.collection_id == collection_id:
                 await connection.websocket.send_text(message)
-                
 
 
 manager = ConnectionManager()

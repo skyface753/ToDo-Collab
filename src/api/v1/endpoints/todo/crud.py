@@ -1,7 +1,8 @@
 from src.models.models import TodoModel, UserModel
 from src.config.env import todo_collection, user_collection
-from src.api.v1.endpoints.team.crud import find_by_id as find_team_by_id
-from src.api.v1.endpoints.user.crud import find_by_id as find_user_by_id
+import src.api.v1.endpoints.collection.crud as collection_crud
+import src.api.v1.endpoints.user.crud as user_crud
+from typing import List
 
 
 async def create_todo(new_todo: TodoModel) -> TodoModel:
@@ -10,10 +11,10 @@ async def create_todo(new_todo: TodoModel) -> TodoModel:
 
     A unique `id` will be created and provided in the response.
     """
-    team = await find_team_by_id(new_todo["team_id"])
-    if team is None:
+    collection = await collection_crud.find_by_id(new_todo.collection_id)
+    if collection is None:
         return None
-    user = await find_user_by_id(new_todo["user_id"])
+    user = await user_crud.find_by_id(new_todo.user_id)
     if user is None:
         return None
 
@@ -22,10 +23,20 @@ async def create_todo(new_todo: TodoModel) -> TodoModel:
     )
     # Add the user name and team name to the response
     created_todo = await todo_collection.find_one({"_id": new_todo.inserted_id})
-
+    created_todo = TodoModel(**created_todo)
     # Add the user name and team name to the response
 
-    created_todo["user_name"] = user["name"]
-    created_todo["team_name"] = team["name"]
+    created_todo.user_name = user.name
+    created_todo.collection_name = collection.name
 
     return created_todo
+
+
+async def find_by_collection_id(collection_id: str) -> List[TodoModel]:
+    """
+    Get all todos for a collection.
+    """
+    todos = await todo_collection.find({"collection_id": collection_id}).to_list(length=100)
+    if todos is None:
+        return None
+    return [TodoModel(**t) for t in todos]
