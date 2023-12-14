@@ -7,6 +7,7 @@ from bson import ObjectId
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
+
 class TodoModel(BaseModel):
     """
     Container for a todo record.
@@ -33,11 +34,9 @@ class TodoModel(BaseModel):
                 "description": "It's your turn to do the dishes.",
             }
         },
-    )    
-    
+    )
 
-    
-    
+
 class UserModel(BaseModel):
     """
     Container for a user record.
@@ -48,22 +47,22 @@ class UserModel(BaseModel):
     # but provided as `id` in the API requests and responses.
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
-    email: str = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
                 "name": "User Name",
-                "email": "foo@bar.com",
                 "password": "Your super secret password",
             }
         },
     )
-    
+
+
 class UserInDBModel(UserModel):
     password: str = Field(...)
-    
+
+
 class TeamModel(BaseModel):
     """
     Container for a Team record.
@@ -85,12 +84,13 @@ class TeamModel(BaseModel):
             }
         },
     )
-    
+
+
 class UserTeamModel(BaseModel):
     """
     Relation between a user and a team.
     """
-    
+
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     user_id: str = Field(...)
     team_id: str = Field(...)
@@ -104,7 +104,8 @@ class UserTeamModel(BaseModel):
             }
         },
     )
-    
+
+
 class TodoCollection(BaseModel):
     """
     A container holding a list of `TodoModel` instances.
@@ -113,9 +114,8 @@ class TodoCollection(BaseModel):
     """
 
     todos: List[TodoModel]
-    
-    
-    
+
+
 # class UpdateStudentModel(BaseModel):
 #     """
 #     A set of optional updates to be made to a document in the database.

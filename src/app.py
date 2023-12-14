@@ -1,74 +1,80 @@
-from fastapi import FastAPI, Request, Response, status
+from bson import json_util
+from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI, Request, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from src.endpoints.todo.router import router as todo_router
 from src.api.v1.endpoints.todo.router import router as todo_router_api
+from src.endpoints.team.router import router as team_router
 from uvicorn.config import LOGGING_CONFIG
-from src.config.env import user_collection
+from src.config.env import team_collection
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm
 import bcrypt
 from fastapi_login.exceptions import InvalidCredentialsException
 import uvicorn
 from src.handler.auth import manager
+from src.api.v1.endpoints.user.crud import find_by_username as find_user_by_username, create_user as create_user
 
 IS_DEV = True
 app = FastAPI()
 
+team_collection.create_index("name", unique=True)
+
+
 app.mount("/static", StaticFiles(directory="src/presentation/static"), name="static")
 
 
-
-
-
 @manager.user_loader()
-async def query_user(email: str):
-    return await user_collection.find_one({"email": email})
+async def query_user(username: str):
+    return await find_user_by_username(username)
 
-async def create_user(email: str, password: str):
-    # Check if user exists
-    user = await query_user(email)
-    hashed = bcrypt.hashpw(bytes(password, 'utf-8'), bcrypt.gensalt())
-    if user:
-        raise ValueError("User already exists")
-    await user_collection.insert_one({"password": hashed, "email": email})
 
 @app.post('/login')
 async def login(response: Response, data: OAuth2PasswordRequestForm = Depends()):
-    email = data.username
+    username = data.username
     password = data.password
-
-    user = await query_user(email)
+    print(username, password)
+    user = await query_user(username)
+    print(user)
     if not user:
         # you can return any response or error of your choice
         print("user not found")
         raise InvalidCredentialsException
-    elif not bcrypt.checkpw(bytes(password, 'utf-8'), user['password']):
+    elif not bcrypt.checkpw(bytes(password, 'utf-8'), bytes(user.password, 'utf-8')):
+        print("password not match")
         raise InvalidCredentialsException
 
     access_token = manager.create_access_token(
-        data={'sub': email}
+        data={'sub': username}
     )
+    response = RedirectResponse(
+        url="/team", status_code=status.HTTP_303_SEE_OTHER)
     manager.set_cookie(response, access_token)
-    return {'message': 'Logged in successfully'}
+    return response
     # return RedirectResponse(url="/todo/1", status_code=status.HTTP_303_SEE_OTHER)
 
-from fastapi.templating import Jinja2Templates
 templates = Jinja2Templates(directory="src/presentation/templates")
+
 
 @app.get('/login')
 async def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-@app.put('/register')
-async def register(data: OAuth2PasswordRequestForm = Depends()):
-    email = data.username
-    password = data.password
 
-    await create_user(email, password)
+@app.post('/register')
+async def register(data: OAuth2PasswordRequestForm = Depends()):
+    username = data.username
+    password = data.password
+    # Check if user exists
+    user = await query_user(username)
+    if user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="User already exists")
+    new_user = await create_user(username, password)
     return {'message': 'user created'}
 
-from bson import json_util
+
 @app.get('/protected')
 def protected_route(user=Depends(manager)):
     print(user)
@@ -82,12 +88,9 @@ async def get():
 
 # Chat
 app.include_router(todo_router, prefix="/todo", tags=["todo"])
-app.include_router(todo_router_api, prefix="/api/v1/todo", tags=["todo/api/v1"])
-
-
-
-
-
+app.include_router(todo_router_api, prefix="/api/v1/todo",
+                   tags=["todo/api/v1"])
+app.include_router(team_router, prefix="/team", tags=["team"])
 
 
 def run():
