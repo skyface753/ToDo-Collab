@@ -1,4 +1,4 @@
-from src.models.models import TodoModel, UserModel
+from src.models.models import TodoModel, UserModel, TodoCollection
 from src.config.env import todo_collection, user_collection
 import src.api.v1.endpoints.collection.crud as collection_crud
 import src.api.v1.endpoints.user.crud as user_crud
@@ -26,11 +26,12 @@ async def create_todo(new_todo: TodoModel) -> TodoModel:
     return TodoModel(**created_todo)
 
 
-async def find_by_collection_id(collection_id: str) -> List[TodoModel]:
+async def find_by_collection_id(collection_id: str) -> TodoCollection:
     """
     Get all todos for a collection.
     """
     todos = await todo_collection.find({"collection_id": collection_id}).to_list(length=None)
     if todos is None:
         return None
-    return [TodoModel(**t) for t in todos]
+    return TodoCollection(todos=[TodoModel(**t) for t in todos])
+    # return [TodoModel(**t) for t in todos]

@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory="src/presentation/templates")
 @router.get("/")
 async def get_my_collection(request: Request, user=Depends(auth_manager)):
     collections = await find_collections_for_user(user.id)
-    return templates.TemplateResponse("collections.html", {"request": request, "collections": collections, "user": user})
+    return templates.TemplateResponse("collections.html.jinja2", {"request": request, "collections": collections, "user": user})
 
 
 @router.post("/create")
@@ -31,9 +31,7 @@ async def get_collection(request: Request, collection_id: str, user=Depends(auth
     token = await auth_manager._get_token(request)
     if user:
         todos = await todo_crud.find_by_collection_id(collection_id)
-        # to string as json
-        todos = [todo.model_dump_json(by_alias=True) for todo in todos]
-        print(todos)
-        return templates.TemplateResponse("collection.html", {"request": request, "collection_id": collection_id, "user": user, "token": token, "todos": todos})
+        todos = todos.model_dump_json(by_alias=True)
+        return templates.TemplateResponse("collection.html.jinja2", {"request": request, "collection_id": collection_id, "user": user, "token": token, "todossosos": todos})
     else:
         return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)

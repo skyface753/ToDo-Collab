@@ -1,5 +1,5 @@
 # from bson import json_util
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query, Depends
 from src.models.models import TodoModel
 from src.handler.websocket import manager
 from src.api.v1.endpoints.todo.crud import create_todo
@@ -36,3 +36,10 @@ async def websocket_endpoint(websocket: WebSocket, collection_id: str, token: st
     except WebSocketDisconnect:
         manager.disconnect(websocket)
         await manager.broadcast(f"User #{user.id} left the chat", collection_id)
+
+
+@router.post("/create")
+async def create_todo(todo: TodoModel, user=Depends(auth_manager)):
+    todo.user_id = user.id
+    created_todo = await create_todo(todo)
+    return created_todo

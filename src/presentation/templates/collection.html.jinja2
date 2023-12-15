@@ -57,12 +57,16 @@
         }
       };
       function init() {
-        json = {{todos|tojson|safe}};
+        json = {{todossosos|tojson|safe}};
         console.log(json);
-        for (var i = 0; i < json.length; i++) {
-          as_json = JSON.parse(json[i]);
-          processTodo(as_json);
-        }
+        json = JSON.parse(json);
+        console.log(json.todos);
+        json.todos.forEach((todo) => {
+          processTodo({
+            title: todo.title,
+            description: todo.description,
+          });
+        });
       }
       function processTodo(todo) {
         var todos = document.getElementById('todos');

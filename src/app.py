@@ -43,10 +43,11 @@ async def login(response: Response, data: OAuth2PasswordRequestForm = Depends())
     access_token = manager.create_access_token(
         data={'sub': username}
     )
-    # response = RedirectResponse(
-    #     url="/collection", status_code=status.HTTP_303_SEE_OTHER)
+    response = RedirectResponse(
+        url="/collection", status_code=status.HTTP_303_SEE_OTHER)
     manager.set_cookie(response, access_token)
-    return {"access_token": access_token, "token_type": "bearer"}
+    return response
+    # return {"access_token": access_token, "token_type": "bearer"}
     # return RedirectResponse(url="/todo/1", status_code=status.HTTP_303_SEE_OTHER)
 
 templates = Jinja2Templates(directory="src/presentation/templates")
@@ -54,7 +55,7 @@ templates = Jinja2Templates(directory="src/presentation/templates")
 
 @app.get('/login')
 async def login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse("login.html.jinja2", {"request": request})
 
 
 @app.post('/register')

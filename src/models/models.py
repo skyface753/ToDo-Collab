@@ -36,6 +36,7 @@ class TodoModel(BaseModel):
                 "collection_id": "Collection ID",
             }
         },
+        json_encoders={ObjectId: str},
     )
 
 
@@ -112,6 +113,12 @@ class TodoCollection(BaseModel):
     """
 
     todos: List[TodoModel]
+    # to json
+
+    class Config:
+        json_encoders = {
+            ObjectId: str
+        }
 
 
 # class UpdateStudentModel(BaseModel):
