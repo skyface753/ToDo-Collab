@@ -27,7 +27,6 @@ body {
   font-size: 1.6rem;
   background-color: var(--background);
   color: var(--on-background);
-  /* width: 100vw; */
 }
 
 main {
@@ -75,7 +74,6 @@ header,
 .items {
   display: flex;
   flex-direction: row-reverse;
-  /* flex-wrap: wrap-reverse; wraps flex items onto multiple lines, from top to bottom */
 }
 
 /* Pizza is clickable */
@@ -89,7 +87,6 @@ header,
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  /* flex-wrap: wrap; */
   justify-content: space-between;
 }
 
@@ -106,7 +103,6 @@ header,
 
 @media screen and (max-width: 600px) {
   .items {
-    /* center */
     justify-content: center;
   }
 
@@ -124,7 +120,6 @@ header,
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
-  /* text-align: ; */
 }
 
 .warenkorb {
@@ -183,14 +178,12 @@ button:disabled {
   font-size: 1.2rem;
   font-weight: bold;
   text-align: center;
-  /* margin: 0.5rem; */
 }
 
 .warenkorb-summe {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 0.5rem;
-  /* align right */
   text-align: right;
 }
 

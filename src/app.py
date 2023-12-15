@@ -1,7 +1,8 @@
+from src.models.models import UserModel
 from bson import json_util
 from fastapi.templating import Jinja2Templates
-from fastapi import FastAPI, Request, Response, status, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Request, status, HTTPException
+from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from src.presentation.endpoints.todo.router import router as todo_router
 from src.api.v1.endpoints.todo.router import router as todo_router_api
@@ -15,7 +16,7 @@ import bcrypt
 from fastapi_login.exceptions import InvalidCredentialsException
 import uvicorn
 from src.handler.auth import manager
-from src.api.v1.endpoints.user.crud import find_by_username as find_user_by_username, create_user as create_user
+import src.api.v1.endpoints.user.crud as user_crud
 
 IS_DEV = True
 app = FastAPI()
@@ -25,49 +26,47 @@ app.mount("/static", StaticFiles(directory="src/presentation/static"), name="sta
 
 
 @manager.user_loader()
-async def query_user(username: str):
-    return await find_user_by_username(username)
+def query_user(username: str):
+    return user_crud.find_by_username(username)
 
 
 @app.post('/login')
-async def login(response: Response, data: OAuth2PasswordRequestForm = Depends()):
+def login_user(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
-    user = await query_user(username)
-    if not user:
-        # you can return any response or error of your choice
-        raise InvalidCredentialsException
-    elif not bcrypt.checkpw(bytes(password, 'utf-8'), bytes(user.password, 'utf-8')):
+    user = query_user(username)
+    if not user or not bcrypt.checkpw(bytes(password, 'utf-8'),
+                                      bytes(user.password, 'utf-8')):
         raise InvalidCredentialsException
 
     access_token = manager.create_access_token(
         data={'sub': username}
     )
-    response = RedirectResponse(
-        url="/collection", status_code=status.HTTP_303_SEE_OTHER)
-    manager.set_cookie(response, access_token)
-    return response
-    # return {"access_token": access_token, "token_type": "bearer"}
-    # return RedirectResponse(url="/todo/1", status_code=status.HTTP_303_SEE_OTHER)
+    redirect_response = RedirectResponse(
+        url=request.url_for('collections'), status_code=status.HTTP_303_SEE_OTHER)
+    manager.set_cookie(redirect_response, access_token)
+    return redirect_response
+
 
 templates = Jinja2Templates(directory="src/presentation/templates")
 
 
-@app.get('/login')
+@app.get('/login', response_class=HTMLResponse, name="login")
 async def login(request: Request):
     return templates.TemplateResponse("login.html.jinja2", {"request": request})
 
 
 @app.post('/register')
-async def register(data: OAuth2PasswordRequestForm = Depends()):
+def register(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
     # Check if user exists
-    user = await query_user(username)
+    user = query_user(username)
     if user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="User already exists")
-    new_user = await create_user(username, password)
+    user = UserModel(name=username, password=password)
+    user_crud.create(user)
     return {'message': 'user created'}
 
 
@@ -77,9 +76,15 @@ def protected_route(user=Depends(manager)):
 
 
 @app.get("/")
-async def get():
+def get(request: Request, user=Depends(manager.optional)):
     """ Redirect to the todo page """
-    return RedirectResponse(url="/collection", status_code=status.HTTP_303_SEE_OTHER)
+    if user:
+        return RedirectResponse(url=request.url_for('collections'),
+                                status_code=status.HTTP_303_SEE_OTHER)
+    else:
+        return RedirectResponse(url=request.url_for('login'),
+                                status_code=status.HTTP_303_SEE_OTHER)
+
 
 # Chat
 app.include_router(todo_router, prefix="/todo", tags=["todo"])

@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, Depends
 from src.handler.auth import manager as auth_manager
 from src.logic.collection import find_collections_for_user
 

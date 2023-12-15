@@ -1,10 +1,11 @@
 import os
-import motor.motor_asyncio
+from pymongo import MongoClient
 
 MONGO_URL = os.environ.get('SERVER_MONGO_URL', 'mongodb://localhost:27017/')
 print(MONGO_URL)
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URL)
+client = MongoClient(MONGO_URL)
 db = client.todo
+
 todo_collection = db.get_collection("todo")
 collection_collection = db.get_collection(
     "collection")  # Holds the collections for the todos

@@ -1,5 +1,5 @@
-from pydantic import ConfigDict, BaseModel, Field, EmailStr
-from typing import Optional, List
+from pydantic import ConfigDict, BaseModel, Field
+from typing import Optional
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 from bson import ObjectId
@@ -17,7 +17,7 @@ class TodoModel(BaseModel):
     # This will be aliased to `_id` when sent to MongoDB,
     # but provided as `id` in the API requests and responses.
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    title: str = Field(...)
+    title: str = Field(..., min_length=1)
     description: str = Field(...)
     # Relation to the user
     user_id: str = Field(...)
@@ -103,52 +103,3 @@ class MembersModel(BaseModel):
             }
         },
     )
-
-
-class TodoCollection(BaseModel):
-    """
-    A container holding a list of `TodoModel` instances.
-
-    This exists because providing a top-level array in a JSON response can be a [vulnerability](https://haacked.com/archive/2009/06/25/json-hijacking.aspx/)
-    """
-
-    todos: List[TodoModel]
-    # to json
-
-    class Config:
-        json_encoders = {
-            ObjectId: str
-        }
-
-
-# class UpdateStudentModel(BaseModel):
-#     """
-#     A set of optional updates to be made to a document in the database.
-#     """
-
-#     name: Optional[str] = None
-#     email: Optional[EmailStr] = None
-#     course: Optional[str] = None
-#     gpa: Optional[float] = None
-#     model_config = ConfigDict(
-#         arbitrary_types_allowed=True,
-#         json_encoders={ObjectId: str},
-#         json_schema_extra={
-#             "example": {
-#                 "name": "Jane Doe",
-#                 "email": "jdoe@example.com",
-#                 "course": "Experiments, Science, and Fashion in Nanophotonics",
-#                 "gpa": 3.0,
-#             }
-#         },
-#     )
-
-
-# class StudentCollection(BaseModel):
-#     """
-#     A container holding a list of `StudentModel` instances.
-
-#     This exists because providing a top-level array in a JSON response can be a [vulnerability](https://haacked.com/archive/2009/06/25/json-hijacking.aspx/)
-#     """
-
-#     students: List[StudentModel]

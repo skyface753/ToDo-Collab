@@ -59,9 +59,8 @@
       function init() {
         json = {{todossosos|tojson|safe}};
         console.log(json);
-        json = JSON.parse(json);
-        console.log(json.todos);
-        json.todos.forEach((todo) => {
+        json.forEach((todo) => {
+          todo = JSON.parse(todo);
           processTodo({
             title: todo.title,
             description: todo.description,
