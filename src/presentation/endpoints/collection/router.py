@@ -5,6 +5,7 @@ import json
 import src.api.v1.endpoints.todo.crud as todo_crud
 import src.api.v1.endpoints.collection.crud as collection_crud
 import src.api.v1.endpoints.member.crud as member_crud
+from src.logic.collection import find_collections_for_user
 from src.handler.auth import manager as auth_manager
 router = APIRouter()
 
@@ -13,15 +14,7 @@ templates = Jinja2Templates(directory="src/presentation/templates")
 
 @router.get("/")
 async def get_my_collection(request: Request, user=Depends(auth_manager)):
-    user_id = user.id
-    members = await member_crud.find_by_user_id(user_id)
-    if members is None:
-        return []
-    collections = []
-    for member in members:
-        collection = await collection_crud.find_by_id(member.collection_id)
-        if collection is not None:
-            collections.append(collection)
+    collections = await find_collections_for_user(user.id)
     return templates.TemplateResponse("collections.html", {"request": request, "collections": collections, "user": user})
 
 

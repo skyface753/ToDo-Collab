@@ -6,7 +6,8 @@ from fastapi.staticfiles import StaticFiles
 from src.presentation.endpoints.todo.router import router as todo_router
 from src.api.v1.endpoints.todo.router import router as todo_router_api
 from src.presentation.endpoints.collection.router import router as collection_router
-from src.api.v1.endpoints.member.router import router as member_router
+from src.api.v1.endpoints.member.router import router as member_router_api
+from src.api.v1.endpoints.collection.router import router as collection_router_api
 from uvicorn.config import LOGGING_CONFIG
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm
@@ -85,8 +86,10 @@ app.include_router(todo_router_api, prefix="/api/v1/todo",
                    tags=["todo/api/v1"])
 app.include_router(collection_router, prefix="/collection",
                    tags=["collection"])
-app.include_router(member_router, prefix="/api/v1/member",
+app.include_router(member_router_api, prefix="/api/v1/member",
                    tags=["member/api/v1"])
+app.include_router(collection_router_api, prefix="/api/v1/collection",
+                   tags=["collection/api/v1"])
 
 
 def run():

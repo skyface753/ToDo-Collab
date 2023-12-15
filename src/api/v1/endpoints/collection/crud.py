@@ -1,6 +1,5 @@
 from src.models.models import CollectionModel
 from src.config.env import collection_collection
-# import src.api.v1.endpoints.member.crud as member_crud
 from bson.objectid import ObjectId
 
 # collection_collection.create_index("name", unique=True)
