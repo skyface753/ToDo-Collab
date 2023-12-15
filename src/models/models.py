@@ -21,10 +21,10 @@ class TodoModel(BaseModel):
     description: str = Field(...)
     # Relation to the user
     user_id: str = Field(...)
-    user_name: Optional[str] = None
+    # user_name: Optional[str] = None
     # Relation to the collection
     collection_id: str = Field(...)
-    collection_name: Optional[str] = None
+    # collection_name: Optional[str] = None
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,

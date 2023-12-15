@@ -2,9 +2,14 @@
 <html>
   <head>
     <title>Chat</title>
-    <script src="/static/js/auth.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="/static/css/main.css"
+    />
   </head>
-  <body>
+  <body onload="init()">
     <h1>WebSocket Chat</h1>
     <h2>Your ID: <span id="ws-id"> {{user.id}} </span></h2>
     <h2>Collection ID: {{collection_id}}</h2>
@@ -34,15 +39,7 @@
       />
       <button>Add to {{collection_id}}</button>
     </form>
-    <div>
-      {% for todo in todos %}
-      <li>
-        <h3>{{todo.title}}</h3>
-        <p>{{todo.description}}</p>
-      </li>
-      {% endfor %}
-    </div>
-    <ul id="todos"></ul>
+    <ul class="todos" id="todos"></ul>
     <script>
       user_id = '{{user._id}}';
       var ws = new WebSocket(
@@ -59,9 +56,18 @@
           console.log(event.data);
         }
       };
+      function init() {
+        json = {{todos|tojson|safe}};
+        console.log(json);
+        for (var i = 0; i < json.length; i++) {
+          as_json = JSON.parse(json[i]);
+          processTodo(as_json);
+        }
+      }
       function processTodo(todo) {
         var todos = document.getElementById('todos');
         var todoItem = document.createElement('li');
+        todoItem.className = 'todo';
         var todoTitle = document.createElement('h3');
         var todoDescription = document.createElement('p');
         todoTitle.textContent = todo.title;

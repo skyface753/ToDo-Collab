@@ -23,20 +23,14 @@ async def create_todo(new_todo: TodoModel) -> TodoModel:
     )
     # Add the user name and team name to the response
     created_todo = await todo_collection.find_one({"_id": new_todo.inserted_id})
-    created_todo = TodoModel(**created_todo)
-    # Add the user name and team name to the response
-
-    created_todo.user_name = user.name
-    created_todo.collection_name = collection.name
-
-    return created_todo
+    return TodoModel(**created_todo)
 
 
 async def find_by_collection_id(collection_id: str) -> List[TodoModel]:
     """
     Get all todos for a collection.
     """
-    todos = await todo_collection.find({"collection_id": collection_id}).to_list(length=100)
+    todos = await todo_collection.find({"collection_id": collection_id}).to_list(length=None)
     if todos is None:
         return None
     return [TodoModel(**t) for t in todos]

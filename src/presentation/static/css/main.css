@@ -129,3 +129,8 @@ body {
 .text-input {
   color: #333;
 }
+
+.todos {
+  display: flex;
+  flex-direction: column-reverse;
+}

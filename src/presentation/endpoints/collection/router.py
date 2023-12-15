@@ -38,7 +38,8 @@ async def get_collection(request: Request, collection_id: str, user=Depends(auth
     token = await auth_manager._get_token(request)
     if user:
         todos = await todo_crud.find_by_collection_id(collection_id)
-        # todos = [todo.model_dump_json(by_alias=True) for todo in todos]
+        # to string as json
+        todos = [todo.model_dump_json(by_alias=True) for todo in todos]
         print(todos)
         return templates.TemplateResponse("collection.html", {"request": request, "collection_id": collection_id, "user": user, "token": token, "todos": todos})
     else:
