@@ -15,11 +15,16 @@
   </head>
   <body>
     <h1>Hello {{user.id}}</h1>
-    {% for collection in collections %}
-    <div class="collection">
-      <h1>{{collection.name}}</h1>
-      <a href="{{url_for('collection', collection_id=collection.id)}}">View</a>
-    </div>
+    <section class="items">
+      {% for collection in collections %}
+        <article class="item" onclick="window.location.href='{{url_for('collection', collection_id=collection.id)}}'">
+          <h1>{{collection.name}}</h1>
+        </article>
     {% endfor %}
+      </section>
+      <form action="{{url_for('create_collection')}}" method="post">
+        <input type="text" name="name" placeholder="Collection Name" />
+        <input type="submit" value="Add Collection" />
+      </form>
   </body>
 </html>

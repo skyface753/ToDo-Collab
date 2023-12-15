@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Query, Depends, HTTPException, status, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 import json
@@ -19,19 +19,21 @@ async def get_my_collection(request: Request, user=Depends(auth_manager)):
 
 
 @router.post("/create")
-async def create_collection(name: str, user=Depends(auth_manager)):
+async def create_collection(request: Request, user=Depends(auth_manager), name: str = Form(...)):
     user_id = user.id
     collection = await collection_crud.create(name)
     await member_crud.create(user_id, collection.id)
-    return collection
+    url = request.url_for("collection", collection_id=collection.id)
+    return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
 
 
 @router.get("/{collection_id}", response_class=HTMLResponse, name="collection")
 async def get_collection(request: Request, collection_id: str, user=Depends(auth_manager)):
     token = await auth_manager._get_token(request)
     if user:
+        collection = await collection_crud.find_by_id(collection_id)
         todos = await todo_crud.find_by_collection_id(collection_id)
         todos = todos.model_dump_json(by_alias=True)
-        return templates.TemplateResponse("collection.html.jinja2", {"request": request, "collection_id": collection_id, "user": user, "token": token, "todossosos": todos})
+        return templates.TemplateResponse("collection.html.jinja2", {"request": request, "collection": collection, "user": user, "token": token, "todossosos": todos})
     else:
         return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)

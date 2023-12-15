@@ -10,9 +10,10 @@
     />
   </head>
   <body onload="init()">
+    <main>
     <h1>WebSocket Chat</h1>
     <h2>Your ID: <span id="ws-id"> {{user.id}} </span></h2>
-    <h2>Collection ID: {{collection_id}}</h2>
+    <h2>Collection: {{collection.name}}</h2>
     <form action="" onsubmit="sendMessage(event)">
       {# Message Input #}
       <input
@@ -37,17 +38,16 @@
         autocomplete="off"
         placeholder="User ID"
       />
-      <button>Add to {{collection_id}}</button>
+      <button class="secondary">Add to {{collection.id}}</button>
     </form>
-    <ul class="todos" id="todos"></ul>
+    <section class="items" id="todos"></section>
     <script>
       user_id = '{{user._id}}';
       var ws = new WebSocket(
-        `ws://localhost:8000/api/v1/todo/ws/{{collection_id}}?token={{token}}`
+        `ws://localhost:8000/api/v1/todo/ws/{{collection.id}}?token={{token}}`
       );
       ws.onmessage = function (event) {
         var todos = document.getElementById('todos');
-
         try {
           var todo = JSON.parse(event.data);
           processTodo(todo);
@@ -70,8 +70,8 @@
       }
       function processTodo(todo) {
         var todos = document.getElementById('todos');
-        var todoItem = document.createElement('li');
-        todoItem.className = 'todo';
+        var todoItem = document.createElement('article');
+        todoItem.className = 'item';
         var todoTitle = document.createElement('h3');
         var todoDescription = document.createElement('p');
         todoTitle.textContent = todo.title;
@@ -103,7 +103,7 @@
         var url = '/api/v1/member/create';
         var data = {
           user_id: user_id_to_add_value,
-          collection_id: '{{collection_id}}',
+          collection_id: '{{collection.id}}',
         };
         const response = await fetch(url, {
           method: 'POST',
@@ -128,5 +128,6 @@
         user_id_to_add.value = '';
       }
     </script>
+    </main>
   </body>
 </html>

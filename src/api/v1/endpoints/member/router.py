@@ -8,6 +8,7 @@ router = APIRouter()
 
 @router.post("/create")
 async def add_user_to_collection(request: Request, member: MembersModel):
+
     exists = await member_crud.find_by_user_id_and_collection_id(member.user_id, member.collection_id)
     if exists:
         url = request.url_for("collection", collection_id=member.collection_id)

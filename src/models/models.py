@@ -91,8 +91,8 @@ class MembersModel(BaseModel):
     """
 
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    user_id: str = Field(...)
-    collection_id: str = Field(...)
+    user_id: str = Field(..., min_length=1)
+    collection_id: str = Field(..., min_length=1)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,

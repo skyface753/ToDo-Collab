@@ -1,136 +1,274 @@
-h1 {
-  color: green;
-}
-
+/* Root colors vars */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary-color: #bb86fc;
+  --primary-variant: #3700b3;
+  --secondary: #03dac6;
+  --background: #121212;
+  --surface: rgba(255, 255, 255, 0.12);
+  --surface-hover: rgba(255, 255, 255, 0.24);
+  --error: #cf6679;
+  --on-primary: #000000;
+  --on-secondary: #000000;
+  --on-background: #ffffff;
+  --on-surface: #ffffff;
+  --on-error: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.secondary {
+  background-color: var(--secondary);
+  color: var(--on-secondary);
+}
+
+/* Global styles */
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.6rem;
+  background-color: var(--background);
+  color: var(--on-background);
+  /* width: 100vw; */
+}
+
+main {
+  margin: 1rem;
+}
+
+.abschnitt {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.abschnitt h2 {
+  margin: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.item-img {
+  width: 100px;
+  height: 100px;
+}
+
+header,
+.row {
+  display: flex; /* aligns all child elements (flex items) in a row */
+
+  border: 1px solid gray;
+  padding: 2rem;
+}
+
+.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: var(--background);
+}
+
+.col {
+  flex: 1; /* distributes space on the line equally among items */
+}
+
+.items {
+  display: flex;
+  flex-direction: row-reverse;
+  /* flex-wrap: wrap-reverse; wraps flex items onto multiple lines, from top to bottom */
+}
+
+/* Pizza is clickable */
+.item {
+  flex: 1 1 250px; /* flex-grow, flex-shrink, flex-basis */
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--surface);
+  border-radius: 0.5rem;
+  /* Clickable */
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  justify-content: space-between;
+}
+
+#todos > .item {
+  cursor: default;
+}
+#todos > .item:hover {
+  background-color: var(--surface);
+}
+
+.item:hover {
+  background-color: var(--surface-hover);
+}
+
+@media screen and (max-width: 600px) {
+  .items {
+    /* center */
+    justify-content: center;
+  }
+
+  /* Center the body */
+  body {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
   }
 }
 
-a {
-  text-decoration: inherit;
-  color: inherit;
+.pizza-info {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  /* text-align: ; */
+}
+
+.warenkorb {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+  background-color: var(--surface);
+  border-radius: 0.5rem;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.item-info > * {
+  margin: 0.2rem;
+}
+button {
+  color: var(--on-primary);
+  background-color: var(--primary-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border: none;
   cursor: pointer;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+button:hover {
+  background-color: var(--primary-variant);
 }
 
-.mixed-chart {
-  /* height: 500px; */
-  width: 80%;
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 
-.delayTimeInput {
-  width: 100px;
-  height: 30px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 5px;
-  margin: 5px;
-  color: #333;
+.button-delete {
+  background-color: var(--error) !important;
 }
 
-.delayTimeInput--changed {
-  color: blue;
+.item-name {
+  font-weight: bold;
+  margin: 0.5rem;
+}
+.item-price {
+  font-size: 0.8rem;
+}
+.item-price-sum {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-.toggleButton {
-  width: 100px;
-  height: 30px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 5px;
-  margin: 5px;
-  background-color: #1d0f9d;
-  color: #fff;
-}
-
-/* Float four columns side by side */
-.column {
-  float: left;
-  width: 25%;
-  padding: 10px 10px;
-}
-
-/* Remove extra left and right margins, due to padding in columns */
-.row {
-  margin: 0 -5px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: '';
-  display: table;
-  clear: both;
-}
-
-/* Style the counter cards */
-.card {
-  box-shadow: -1px 1px 7px 5px rgba(var(--foreground-rgb), 0.2);
-  padding: 16px;
+.item-anzahl {
+  font-size: 1.2rem;
+  font-weight: bold;
   text-align: center;
-  background-color: rgb(var(--background-end-rgb));
+  /* margin: 0.5rem; */
 }
 
-/* Responsive columns - one column layout (vertical) on small screens */
+.warenkorb-summe {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.5rem;
+  /* align right */
+  text-align: right;
+}
+
+.warenkorb-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: left;
+  margin: 1rem;
+}
+
+.warenkorb-footer > input {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid gray;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: var(--surface);
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: var(--on-surface);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: var(--surface);
+  color: var(--on-surface);
+}
+
+.topnav a.active {
+  background-color: var(--primary-color);
+  color: var(--on-primary);
+}
+
+.topnav .icon {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
+  .topnav a:not(:first-child) {
+    display: none;
+  }
+  .topnav a.icon {
+    float: right;
     display: block;
-    margin-bottom: 20px;
   }
 }
 
-.list {
-  border-top: groove;
-  border-color: rgb(var(--foreground-rgb));
+@media screen and (max-width: 600px) {
+  .topnav.responsive {
+    position: relative;
+  }
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
 }
 
-.card-header {
-  display: flex;
-  justify-content: center;
-}
-
-.dot {
-  height: 25px;
-  width: 25px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 2px;
-}
-.green {
-  background-color: green;
-}
-.red {
-  background-color: red;
-}
-.orange {
-  background-color: orange;
-}
-
-.text-input {
-  color: #333;
-}
-
-.todos {
-  display: flex;
-  flex-direction: column-reverse;
+input[type='text'] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  /* round border */
+  border-radius: 4px;
 }
