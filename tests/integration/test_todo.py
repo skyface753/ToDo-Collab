@@ -20,7 +20,7 @@ def test_todo_create_read_update_delete():
     todo = TodoModel(title=todo_title, description=todo_description, user_id=user.id,
                      collection_id=collection.id)
     number_of_todos = len(todo_crud.find_all())
-    todo = todo_crud.create_todo(todo)
+    todo = todo_crud.create(todo)
     created_todo = todo_crud.find_by_id(todo.id)
     assert created_todo.title == todo_title
     assert created_todo.description == todo_description

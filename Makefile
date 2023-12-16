@@ -21,4 +21,4 @@ sonar:
 		-Dsonar.host.url=http://10.2.0.104:9000 \
 		-Dsonar.token=${SONAR_TOKEN} \
 		-Dsonar.python.coverage.reportPaths=coverage.xml \
-		-Dsonar.coverage.exclusions=tests/**,**/router.py,**/src/presentation/**,**/src/models/**,**/src/handler/**,**/src/config/**,**/src/*.py,**/src/logic/**
+		-Dsonar.coverage.exclusions=tests/**,**/router.py,**/src/presentation/**,**/src/models/**,**/src/handler/**,**/src/config/**,**/src/*.py

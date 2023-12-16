@@ -4,7 +4,7 @@ from typing import List
 from bson.objectid import ObjectId
 
 
-def create_todo(new_todo: TodoModel) -> TodoModel:
+def create(new_todo: TodoModel) -> TodoModel:
     """
     Insert a new todo record.
 
@@ -53,3 +53,17 @@ def find_all() -> List[TodoModel]:
     for todo in todo_collection.find():
         todos.append(TodoModel(**todo))
     return todos
+
+
+def delete_by_collection_id(collection_id: str) -> None:
+    """
+    Delete all todos for a collection.
+    """
+    todo_collection.delete_many({"collection_id": collection_id})
+
+
+def delete_by_user_id(user_id: str) -> None:
+    """
+    Delete all todos for a user.
+    """
+    todo_collection.delete_many({"user_id": user_id})

@@ -61,3 +61,12 @@ def find_all() -> List[MembersModel]:
 def delete(member: MembersModel) -> None:
     """ Delete a Member. """
     member_collection.delete_one({"_id": ObjectId(member.id)})
+
+
+def delete_by_user_id(user_id: str) -> List[MembersModel]:
+    """ Delete all Member Relations by the user_id.
+        Returns the deleted members. (for cleanup cascade)
+    """
+    members = find_by_user_id(user_id)
+    member_collection.delete_many({"user_id": user_id})
+    return members

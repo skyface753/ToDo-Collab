@@ -17,6 +17,7 @@ from fastapi_login.exceptions import InvalidCredentialsException
 import uvicorn
 from src.handler.auth import manager
 import src.api.v1.endpoints.user.crud as user_crud
+import src.logic.user as user_logic
 
 IS_DEV = True
 app = FastAPI()
@@ -89,9 +90,8 @@ def delete_account(data: OAuth2PasswordRequestForm = Depends()):
     if not bcrypt.checkpw(bytes(password, 'utf-8'),
                           bytes(user.password, 'utf-8')):
         raise InvalidCredentialsException
-    user_crud.delete_by_id(user.id)
+    user_logic.delete_user_cascade(user)
 
-    # TODO: Delete all collections, member roles and todos
     return {"message": "User deleted"}
 
 
