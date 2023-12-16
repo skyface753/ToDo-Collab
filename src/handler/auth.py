@@ -1,10 +1,16 @@
 from fastapi_login import LoginManager
 from datetime import timedelta
 import src.api.v1.endpoints.user.crud as user_crud
+from src.config.env import AUTH_SECRET
 
-SECRET = "super-secret-key"
-auth_manager = LoginManager(SECRET, '/login', use_cookie=True,
-                            default_expiry=timedelta(minutes=60))
+
+class NotAuthenticatedException(Exception):
+    pass
+
+
+auth_manager = LoginManager(AUTH_SECRET, '/login', use_cookie=True,
+                            default_expiry=timedelta(minutes=60),
+                            custom_exception=NotAuthenticatedException)
 
 
 @auth_manager.user_loader()

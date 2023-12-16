@@ -11,7 +11,7 @@ from src.presentation.endpoints.auth.router import router as auth_router
 from uvicorn.config import LOGGING_CONFIG
 from fastapi import Depends
 import uvicorn
-from src.handler.auth import auth_manager
+from src.handler.auth import auth_manager, NotAuthenticatedException
 
 IS_DEV = True
 app = FastAPI()
@@ -26,14 +26,10 @@ def protected_route(user=Depends(auth_manager)):
 
 
 @app.get("/")
-def get(request: Request, user=Depends(auth_manager.optional)):
+def get(request: Request, user=Depends(auth_manager)):
     """ Redirect to the todo page """
-    if user:
-        return RedirectResponse(url=request.url_for('collections'),
-                                status_code=status.HTTP_303_SEE_OTHER)
-    else:
-        return RedirectResponse(url=request.url_for('login'),
-                                status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(url=request.url_for('collections'),
+                            status_code=status.HTTP_303_SEE_OTHER)
 
 
 # Chat
@@ -47,6 +43,14 @@ app.include_router(member_router_api, prefix="/api/v1/member",
 app.include_router(collection_router_api, prefix="/api/v1/collection",
                    tags=["collection/api/v1"])
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
+
+
+@app.exception_handler(NotAuthenticatedException)
+def auth_exception_handler(request: Request, exc: NotAuthenticatedException):
+    """
+    Redirect the user to the login page if not logged in
+    """
+    return RedirectResponse(url=request.url_for('login'),)
 
 
 def run():
