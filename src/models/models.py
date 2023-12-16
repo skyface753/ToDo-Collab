@@ -21,10 +21,8 @@ class TodoModel(BaseModel):
     description: str = Field(...)
     # Relation to the user
     user_id: str = Field(...)
-    # user_name: Optional[str] = None
     # Relation to the collection
     collection_id: str = Field(...)
-    # collection_name: Optional[str] = None
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -33,7 +31,7 @@ class TodoModel(BaseModel):
                 "title": "Do the dishes",
                 "description": "It's your turn to do the dishes.",
                 "user_id": "User ID",
-                "collection_id": "Collection ID",
+                "collection_id": "Collection ID",  # NOSONAR
             }
         },
         json_encoders={ObjectId: str},
@@ -63,16 +61,11 @@ class UserModel(BaseModel):
     )
 
 
-class CollectionModel(BaseModel):
+class CreateCollectionModel(BaseModel):
     """
-    Container for a Collection record.
-    Collections are used to group todos.
+    Create a new collection.
     """
 
-    # The primary key for the TodoModel, stored as a `str` on the instance.
-    # This will be aliased to `_id` when sent to MongoDB,
-    # but provided as `id` in the API requests and responses.
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,6 +75,27 @@ class CollectionModel(BaseModel):
                 "name": "Collection Name",
             }
         },
+    )
+
+
+class CollectionModel(BaseModel):
+    """
+    Container for a Collection record.
+    Collections are used to group todos.
+    """
+
+    id: PyObjectId = Field(alias="_id", default=ObjectId())
+    name: str = Field(...)
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+        json_schema_extra={
+            "example": {
+                "id": "Collection ID",  # NOSONAR
+                "name": "Collection Name",
+            }
+        },
+        json_encoders={ObjectId: str},
     )
 
 
@@ -99,7 +113,7 @@ class MembersModel(BaseModel):
         json_schema_extra={
             "example": {
                 "user_id": "User ID",
-                "collection_id": "Collection ID",
+                "collection_id": "Collection ID",  # NOSONAR
             }
         },
     )

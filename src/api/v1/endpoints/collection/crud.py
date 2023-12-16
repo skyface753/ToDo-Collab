@@ -1,4 +1,4 @@
-from src.models.models import CollectionModel
+from src.models.models import CollectionModel, CreateCollectionModel
 from src.config.env import collection_collection
 from bson.objectid import ObjectId
 from typing import List
@@ -6,7 +6,7 @@ from typing import List
 collection_collection.create_index("name", unique=True)
 
 
-def create(collection: CollectionModel) -> CollectionModel:
+def create(collection: CreateCollectionModel) -> CollectionModel:
     """ Create a new Collection """
     collection = collection_collection.insert_one(
         collection.model_dump(by_alias=True, exclude=["id"])
@@ -45,7 +45,7 @@ def find_all() -> List[CollectionModel]:
     return collections
 
 
-def update(collection: CollectionModel, updated_collection: CollectionModel) \
+def update(collection: CollectionModel, updated_collection: CreateCollectionModel) \
         -> CollectionModel:
     """
     Update a collection.

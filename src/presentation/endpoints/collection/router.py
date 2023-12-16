@@ -1,11 +1,9 @@
-from fastapi import APIRouter, Depends, status, Request, Form
+from fastapi import APIRouter, Depends, status, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
-from src.models.models import CollectionModel, MembersModel
 import src.api.v1.endpoints.todo.crud as todo_crud
 import src.api.v1.endpoints.collection.crud as collection_crud
-import src.api.v1.endpoints.member.crud as member_crud
-from src.logic.collection import find_collections_for_user
+import src.logic.collection as collection_logic
 from src.handler.auth import manager as auth_manager
 router = APIRouter()
 
@@ -14,23 +12,11 @@ templates = Jinja2Templates(directory="src/presentation/templates")
 
 @router.get("/", response_class=HTMLResponse, name="collections")
 def get_my_collection(request: Request, user=Depends(auth_manager)):
-    collections = find_collections_for_user(user.id)
+    collections = collection_logic.find_collections_for_user(user.id)
     return templates.TemplateResponse("collections.html.jinja2",
                                       {"request": request,
                                        "collections": collections,
                                        "user": user})
-
-
-@router.post("/create")
-def create_collection(request: Request, name: str = Form(...),
-                      user=Depends(auth_manager)):
-    user_id = user.id
-    collection = CollectionModel(name=name)
-    collection = collection_crud.create(collection)
-    member = MembersModel(user_id=user_id, collection_id=collection.id)
-    member_crud.create(member)
-    url = request.url_for("collection", collection_id=collection.id)
-    return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
 
 
 @router.get("/{collection_id}", response_class=HTMLResponse, name="collection")

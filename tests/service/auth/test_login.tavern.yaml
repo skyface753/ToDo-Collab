@@ -1,0 +1,19 @@
+---
+test_name: Make sure server implements crud functionality for auth endpoint
+
+includes:
+  - !include login_stage.yaml
+
+stages:
+  - type: ref
+    id: register_user
+  - type: ref
+    id: login_user
+  - type: ref
+    id: delete_account
+  - type: ref
+    id: register_not_member_user
+  - type: ref
+    id: login_not_member_user
+  - type: ref
+    id: delete_not_member_account

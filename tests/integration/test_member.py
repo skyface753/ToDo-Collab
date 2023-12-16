@@ -3,7 +3,7 @@ import src.api.v1.endpoints.user.crud as user_crud
 
 import src.api.v1.endpoints.member.crud as member_crud
 
-from src.models.models import CollectionModel, UserModel, MembersModel
+from src.models.models import UserModel, MembersModel, CreateCollectionModel
 
 
 def test_member_create_read_update_delete():
@@ -17,7 +17,7 @@ def test_member_create_read_update_delete():
     user_id = created_user.id
 
     collection_name = "test_collection"
-    collection = CollectionModel(name=collection_name)
+    collection = CreateCollectionModel(name=collection_name)
     created_collection = collection_crud.create(collection)
     assert created_collection.name == collection_name
     assert created_collection.id is not None

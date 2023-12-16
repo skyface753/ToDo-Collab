@@ -12,7 +12,7 @@ def test_todo_create_read_update_delete():
         name=user_name, password=user_password))
     collection_name = "test_collection"
     collection = collection_crud.create(
-        collection_crud.CollectionModel(name=collection_name))
+        collection_crud.CreateCollectionModel(name=collection_name))
     # Create a todo
 
     todo_title = "test_todo"

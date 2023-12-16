@@ -1,0 +1,32 @@
+---
+name: Collection stage
+
+description: Reusable test stage for creating collections
+
+variables:
+  collection_name: 'Test Collection'
+
+stages:
+  - id: create_collection
+    name: create the test collection
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection
+      json:
+        name: '{collection_name:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        name: '{collection_name:s}'
+        _id: !anything
+      save:
+        json:
+          collection_id: _id
+
+  - id: delete_collection
+    name: Delete collection with id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection/{collection_id}
+      method: DELETE
+    response:
+      status_code: 204

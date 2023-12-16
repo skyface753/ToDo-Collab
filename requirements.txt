@@ -12,3 +12,5 @@ python-multipart==0.0.6
 fastapi_login
 pytest-cov
 pytest-xdist
+tavern
+pytest-pspec

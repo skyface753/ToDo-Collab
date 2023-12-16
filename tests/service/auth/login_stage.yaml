@@ -1,0 +1,103 @@
+---
+name: Auth stage
+
+description: Reusable test stage for authenticating users
+
+variables:
+  username: 'Test123'
+  password: 'Test123'
+  username_2: 'NotMemberUser'
+  password_2: 'NotMemberUser'
+
+stages:
+  - id: register_user
+    name: Register user
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/register
+      data:
+        username: '{username:s}'
+        password: '{password:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        message: User created successfully
+
+  - id: register_not_member_user
+    name: Register a user, which is not a member of the collection
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/register
+      data:
+        username: '{username_2:s}'
+        password: '{password_2:s}'
+      method: POST
+    response:
+      status_code: 201
+      json:
+        message: User created successfully
+
+  - id: login_user
+    name: Login user
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/login
+      data:
+        username: '{username:s}'
+        password: '{password:s}'
+      method: POST
+    response:
+      status_code: 303
+      json:
+        message: Logged in as {username:s}
+        access_token: !anything
+        user:
+          name: '{username:s}'
+          id: !anystr
+      save:
+        json:
+          access_token: access_token
+      cookies:
+        - access-token
+
+  - id: login_not_member_user
+    name: Login user, which is not a member of the collection
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/login
+      data:
+        username: '{username_2:s}'
+        password: '{password_2:s}'
+      method: POST
+    response:
+      status_code: 303
+      json:
+        message: Logged in as {username_2:s}
+        access_token: !anything
+        user:
+          name: '{username_2:s}'
+          id: !anystr
+      save:
+        json:
+          access_token_2: access_token
+      cookies:
+        - access-token
+
+  - id: delete_account
+    name: Delete account
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/delete_account
+      method: DELETE
+      data:
+        username: '{username:s}'
+        password: '{password:s}'
+    response:
+      status_code: 204
+
+  - id: delete_not_member_account
+    name: Delete account
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/delete_account
+      method: DELETE
+      data:
+        username: '{username_2:s}'
+        password: '{password_2:s}'
+    response:
+      status_code: 204

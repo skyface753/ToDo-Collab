@@ -11,9 +11,9 @@
       media="screen"
       href="/static/css/main.css"
     />
-    <!-- <script src='main.js'></script> -->
+    <script src='/static/js/collections.js'></script>
   </head>
-  <body>
+  <body onload="init()">
     <h1>Hello {{user.id}}</h1>
     <section class="items">
       {% for collection in collections %}
@@ -22,8 +22,8 @@
         </article>
     {% endfor %}
       </section>
-      <form action="{{url_for('create_collection')}}" method="post">
-        <input type="text" name="name" placeholder="Collection Name" />
+      <form id="create-collection">
+        <input type="text" name="name" placeholder="Collection Name" id="create-collection-name" />
         <input type="submit" value="Add Collection" />
       </form>
   </body>

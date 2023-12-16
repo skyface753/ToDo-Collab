@@ -1,0 +1,53 @@
+---
+test_name: Make sure server implements crud functionality for collection endpoint
+
+includes:
+  - !include collection_stage.yaml
+  - !include ../auth/login_stage.yaml
+
+stages:
+  - type: ref
+    id: register_user
+  - type: ref
+    id: login_user
+  - type: ref
+    id: create_collection
+  - name: Get collection by id
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection/{collection_id}
+      method: GET
+    response:
+      status_code: 200
+      json:
+        name: '{collection_name:s}'
+        _id: '{collection_id:s}'
+  - name: Get my collections
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection
+      method: GET
+    response:
+      status_code: 200
+      json:
+        - name: '{collection_name:s}'
+          _id: '{collection_id:s}'
+  - type: ref
+    id: register_not_member_user
+  - type: ref
+    id: login_not_member_user
+  - name: Get no collection, because no memeber
+    request:
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection
+      method: GET
+    response:
+      status_code: 200
+      json: []
+
+  # Delete all created objects
+  - type: ref
+    id: login_user # login as user, which is member of the collection
+  - type: ref
+    id: delete_collection
+  - type: ref
+    id: delete_account
+  - type: ref
+    id: delete_not_member_account

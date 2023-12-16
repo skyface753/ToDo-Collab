@@ -1,7 +1,7 @@
 from src.models.models import UserModel
 from bson import json_util
 from fastapi.templating import Jinja2Templates
-from fastapi import FastAPI, Request, status, HTTPException
+from fastapi import FastAPI, Request, status, HTTPException, Response
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from src.presentation.endpoints.todo.router import router as todo_router
@@ -30,7 +30,7 @@ def query_user(username: str):
     return user_crud.find_by_username(username)
 
 
-@app.post('/login')
+@app.post('/login', status_code=status.HTTP_200_OK)
 def login_user(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
@@ -42,10 +42,17 @@ def login_user(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     access_token = manager.create_access_token(
         data={'sub': username}
     )
-    redirect_response = RedirectResponse(
-        url=request.url_for('collections'), status_code=status.HTTP_303_SEE_OTHER)
-    manager.set_cookie(redirect_response, access_token)
-    return redirect_response
+    user.password = None
+    url = str(request.url_for('collections'))
+    print(url)
+    headers = {'Location': url}
+    username = user.name
+    data = {'message': 'Logged in as ' + username, 'access_token': access_token,
+            'user': user.model_dump(exclude=["password"])}
+    rsp = Response(content=json_util.dumps(data), media_type="application/json",
+                   status_code=status.HTTP_303_SEE_OTHER, headers=headers)
+    manager.set_cookie(rsp, access_token)
+    return rsp
 
 
 templates = Jinja2Templates(directory="src/presentation/templates")
@@ -56,7 +63,7 @@ async def login(request: Request):
     return templates.TemplateResponse("login.html.jinja2", {"request": request})
 
 
-@app.post('/register')
+@app.post('/register', status_code=status.HTTP_201_CREATED)
 def register(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
@@ -67,7 +74,25 @@ def register(data: OAuth2PasswordRequestForm = Depends()):
                             detail="User already exists")
     user = UserModel(name=username, password=password)
     user_crud.create(user)
-    return {'message': 'user created'}
+    return {'message': 'User created successfully'}
+
+
+@app.delete("/delete_account", status_code=status.HTTP_204_NO_CONTENT)
+def delete_account(data: OAuth2PasswordRequestForm = Depends()):
+    username = data.username
+    password = data.password
+    # Check if user exists
+    user = query_user(username)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="User does not exist")
+    if not bcrypt.checkpw(bytes(password, 'utf-8'),
+                          bytes(user.password, 'utf-8')):
+        raise InvalidCredentialsException
+    user_crud.delete_by_id(user.id)
+
+    # TODO: Delete all collections, member roles and todos
+    return {"message": "User deleted"}
 
 
 @app.get('/protected')
