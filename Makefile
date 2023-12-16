@@ -2,7 +2,7 @@
 run: 
 	SERVER_MONGO_URL=${SERVER_MONGO_URL} python3 -m src
 
-test: lint integration_tests service_tests
+test: lint integration_tests service_tests sonar
 
 lint:
 	flakeheaven lint src/ tests/

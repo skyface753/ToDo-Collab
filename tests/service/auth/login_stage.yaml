@@ -13,33 +13,33 @@ stages:
   - id: register_user
     name: Register user
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/register
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/register
       data:
         username: '{username:s}'
         password: '{password:s}'
       method: POST
     response:
-      status_code: 201
+      status_code: 303
       json:
         message: User created successfully
 
   - id: register_not_member_user
     name: Register a user, which is not a member of the collection
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/register
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/register
       data:
         username: '{username_2:s}'
         password: '{password_2:s}'
       method: POST
     response:
-      status_code: 201
+      status_code: 303
       json:
         message: User created successfully
 
   - id: login_user
     name: Login user
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/login
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/login
       data:
         username: '{username:s}'
         password: '{password:s}'
@@ -61,7 +61,7 @@ stages:
   - id: login_not_member_user
     name: Login user, which is not a member of the collection
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/login
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/login
       data:
         username: '{username_2:s}'
         password: '{password_2:s}'
@@ -83,7 +83,7 @@ stages:
   - id: delete_account
     name: Delete account
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/delete_account
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/delete
       method: DELETE
       data:
         username: '{username:s}'
@@ -94,7 +94,7 @@ stages:
   - id: delete_not_member_account
     name: Delete account
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/delete_account
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/delete
       method: DELETE
       data:
         username: '{username_2:s}'

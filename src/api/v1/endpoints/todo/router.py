@@ -3,7 +3,7 @@ from src.models.models import TodoModel
 from src.handler.websocket import manager
 import src.api.v1.endpoints.todo.crud as todo_crud
 import json
-from src.handler.auth import manager as auth_manager
+from src.handler.auth import auth_manager
 router = APIRouter()
 
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, Response, HTTPException
-from src.handler.auth import manager as auth_manager
+from src.handler.auth import auth_manager
 import src.logic.collection as collection_logic
 import src.api.v1.endpoints.collection.crud as collection_crud
 import src.api.v1.endpoints.member.crud as member_crud

@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 import src.api.v1.endpoints.todo.crud as todo_crud
 import src.api.v1.endpoints.collection.crud as collection_crud
 import src.logic.collection as collection_logic
-from src.handler.auth import manager as auth_manager
+from src.handler.auth import auth_manager
 router = APIRouter()
 
 templates = Jinja2Templates(directory="src/presentation/templates")
