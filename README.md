@@ -1,3 +1,5 @@
+[![flake8 Lint](https://github.com/skyface753/ToDo-Collab/actions/workflows/ci.yaml/badge.svg)](https://github.com/skyface753/ToDo-Collab/actions/workflows/ci.yaml)
+
 # PRG
 
 Post requests always return status code 303, with the location header set to the URL of the newly created resource. This is a redirect, and the browser will make a GET request to the new URL. This is called the Post/Redirect/Get pattern.
