@@ -14,12 +14,12 @@ import src.logic.user as user_logic
 
 router = APIRouter()
 
-templates = Jinja2Templates(directory="src/presentation/templates")
+templates = Jinja2Templates(directory='src/presentation/templates')
 
 
-@router.get('/login', response_class=HTMLResponse, name="login")
+@router.get('/login', response_class=HTMLResponse, name='login')
 def login_page(request: Request):
-    return templates.TemplateResponse("login.html.jinja2", {"request": request})
+    return templates.TemplateResponse('login.html.jinja2', {'request': request})
 
 
 @router.post('/login', status_code=status.HTTP_200_OK)
@@ -32,7 +32,7 @@ def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
         raise InvalidCredentialsException
 
     access_token = auth_manager.create_access_token(
-        data={'sub': username}
+        data={'sub': username},
     )
     user.password = None
     url = str(request.url_for('collections'))
@@ -40,16 +40,16 @@ def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     headers = {'Location': url}
     username = user.name
     data = {'message': 'Logged in as ' + username, 'access_token': access_token,
-            'user': user.model_dump(exclude=["password"])}
-    rsp = Response(content=json_util.dumps(data), media_type="application/json",
+            'user': user.model_dump(exclude=['password'])}
+    rsp = Response(content=json_util.dumps(data), media_type='application/json',
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, access_token)
     return rsp
 
 
-@router.get('/register', response_class=HTMLResponse, name="register")
+@router.get('/register', response_class=HTMLResponse, name='register')
 def register_page(request: Request):
-    return templates.TemplateResponse("register.html.jinja2", {"request": request})
+    return templates.TemplateResponse('register.html.jinja2', {'request': request})
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED)
@@ -60,21 +60,21 @@ def register(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     user = query_user(username)
     if user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="User already exists")
+                            detail='User already exists')
     user = UserModel(name=username, password=password)
     user_crud.create(user)
     url = str(request.url_for('collections'))
     headers = {'Location': url}
     rsp = Response(content=json_util.dumps({'message': 'User created successfully'}),
-                   media_type="application/json",
+                   media_type='application/json',
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, auth_manager.create_access_token(
-        data={'sub': username}
+        data={'sub': username},
     ))
     return rsp
 
 
-@router.delete("/delete", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/delete', status_code=status.HTTP_204_NO_CONTENT)
 def delete_account(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
@@ -82,10 +82,10 @@ def delete_account(data: OAuth2PasswordRequestForm = Depends()):
     user = query_user(username)
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="User does not exist")
+                            detail='User does not exist')
     if not bcrypt.checkpw(bytes(password, 'utf-8'),
                           bytes(user.password, 'utf-8')):
         raise InvalidCredentialsException
     user_logic.delete_user_cascade(user)
 
-    return {"message": "User deleted"}
+    return {'message': 'User deleted'}

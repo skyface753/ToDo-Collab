@@ -3,7 +3,7 @@ from src.models.models import CreateCollectionModel
 
 
 def test_collection_create_read_update_delete():
-    collection_name = "test_collection"
+    collection_name = 'test_collection'
     collection = CreateCollectionModel(name=collection_name)
     number_of_collections = len(collection_crud.find_all())
     created_collection = collection_crud.create(collection)
@@ -14,13 +14,13 @@ def test_collection_create_read_update_delete():
     found_collection_by_name = collection_crud.find_by_name(collection_name)
     assert found_collection.name == collection_name == found_collection_by_name.name
     assert found_collection.id == created_collection.id == found_collection_by_name.id
-    updated_collection_name = "updated_collection"
+    updated_collection_name = 'updated_collection'
     update_collection = CreateCollectionModel(name=updated_collection_name)
     updated_collection = collection_crud.update(
         found_collection, update_collection)
     print(updated_collection)
     # Find by name wrong
-    assert collection_crud.find_by_name("not_existing_name") is None
+    assert collection_crud.find_by_name('not_existing_name') is None
 
     assert updated_collection.name == updated_collection_name
     assert updated_collection.id == created_collection.id

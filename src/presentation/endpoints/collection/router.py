@@ -7,19 +7,19 @@ import src.logic.collection as collection_logic
 from src.handler.auth import auth_manager
 router = APIRouter()
 
-templates = Jinja2Templates(directory="src/presentation/templates")
+templates = Jinja2Templates(directory='src/presentation/templates')
 
 
-@router.get("/", response_class=HTMLResponse, name="collections")
+@router.get('/', response_class=HTMLResponse, name='collections')
 def get_my_collection(request: Request, user=Depends(auth_manager)):
     collections = collection_logic.find_collections_for_user(user.id)
-    return templates.TemplateResponse("collections.html.jinja2",
-                                      {"request": request,
-                                       "collections": collections,
-                                       "user": user})
+    return templates.TemplateResponse('collections.html.jinja2',
+                                      {'request': request,
+                                       'collections': collections,
+                                       'user': user})
 
 
-@router.get("/{collection_id}", response_class=HTMLResponse, name="collection")
+@router.get('/{collection_id}', response_class=HTMLResponse, name='collection')
 async def get_collection(request: Request, collection_id: str,
                          user=Depends(auth_manager)):
     token = await auth_manager._get_token(request)
@@ -29,11 +29,11 @@ async def get_collection(request: Request, collection_id: str,
         todos_json = []
         for todo in todos:
             todos_json.append(todo.model_dump_json(by_alias=True))
-        return templates.TemplateResponse("collection.html.jinja2",
-                                          {"request": request,
-                                           "collection": collection,
-                                           "user": user,
-                                           "token": token,
-                                           "todossosos": todos_json})
+        return templates.TemplateResponse('collection.html.jinja2',
+                                          {'request': request,
+                                           'collection': collection,
+                                           'user': user,
+                                           'token': token,
+                                           'todossosos': todos_json})
     else:
-        return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse(url='/login', status_code=status.HTTP_303_SEE_OTHER)

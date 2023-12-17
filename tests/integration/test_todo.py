@@ -6,17 +6,17 @@ from src.models.models import TodoModel
 
 def test_todo_create_read_update_delete():
     # Mock a user and collection
-    user_name = "test_user"
-    user_password = "test_password"
+    user_name = 'test_user'
+    user_password = 'test_password'
     user = user_crud.create(user_crud.UserModel(
         name=user_name, password=user_password))
-    collection_name = "test_collection"
+    collection_name = 'test_collection'
     collection = collection_crud.create(
         collection_crud.CreateCollectionModel(name=collection_name))
     # Create a todo
 
-    todo_title = "test_todo"
-    todo_description = "test_description"
+    todo_title = 'test_todo'
+    todo_description = 'test_description'
     todo = TodoModel(title=todo_title, description=todo_description, user_id=user.id,
                      collection_id=collection.id)
     number_of_todos = len(todo_crud.find_all())

@@ -8,15 +8,15 @@ from src.models.models import UserModel, MembersModel, CreateCollectionModel
 
 def test_member_create_read_update_delete():
     # Arrange create collection and user
-    user_name = "test_user"
-    user_password = "test_password"
+    user_name = 'test_user'
+    user_password = 'test_password'
     user = UserModel(name=user_name, password=user_password)
     created_user = user_crud.create(user)
     assert created_user.name == user_name
     assert created_user.id is not None
     user_id = created_user.id
 
-    collection_name = "test_collection"
+    collection_name = 'test_collection'
     collection = CreateCollectionModel(name=collection_name)
     created_collection = collection_crud.create(collection)
     assert created_collection.name == collection_name
@@ -66,10 +66,10 @@ def test_member_create_read_update_delete():
 
     # Found by user_id, collection_id not in db
     found_not_existing_member = member_crud.find_by_user_id_and_collection_id(
-        user_id, "0000")
+        user_id, '0000')
     assert found_not_existing_member is None
     found_not_existing_member = member_crud.find_by_user_id_and_collection_id(
-        "0000", collection_id)
+        '0000', collection_id)
     assert found_not_existing_member is None
 
     # Act: delete

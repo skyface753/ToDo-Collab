@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "todo_collab"
+version = "1.0.0"
+description = "A simple todo app with collaboration features"
+authors = ["Sebastian Joerz <sjoerz@skyface.de"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10.0"
+fastapi = "0.105.0"
+uvicorn = "0.24.0"
+python-dotenv = "0.1"
+pymongo = "4.6.1"
+pydantic = "2.5.2"
+websockets = "12.0"
+jinja2 = "3.1.2"
+fastapi_login = "1.9.2"
+python-multipart = "0.0.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.2.1"
+tavern = "2.0.5"
+pytest-cov = "4.0.0"
+coverage = {version = "7.2.1", extras= ["toml"]}
+flakeheaven = "3.2.1"
+flake8-commas = "2.1.0"
+flake8-quotes = "3.3.2"
+mypy = "1.0.1"
+pytest-mock = "3.10.0"
+pytest-pspec = "0.0.4"
+
+[tool.pytest.ini_options]
+minversion = "7.2.1"
+addopts = "--import-mode=importlib"
+
+[tool.flakeheaven]
+exclude = ["example.py", "setup.py", "README.rst", "app/database/migrations/"]
+max_line_length = 120
+show_source = true
+
+[tool.flakeheaven.plugins]
+pycodestyle = ["+*"]
+pyflakes = ["+*"]
+flake8-commas = ["+*"]
+flake8-quotes = ["+*"]
+pylint = ["+F*", "+E*", "-E0611", "-E1101", "-E0401", "-E1102", "-E1123"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/database/migrations/*"]
+
+[build-system]
+requires = ["poetry>=1.4.0"]
+build-backend = "poetry.core.masonry.api"
