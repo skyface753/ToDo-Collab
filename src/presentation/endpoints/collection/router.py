@@ -12,7 +12,7 @@ templates = Jinja2Templates(directory='src/presentation/templates')
 
 @router.get('/', response_class=HTMLResponse, name='collections')
 def get_my_collection(request: Request, user=Depends(auth_manager)):
-    collections = collection_logic.find_collections_for_user(user.id)
+    collections = collection_logic.find_collections_for_user(user.name)
     return templates.TemplateResponse('collections.html.jinja2',
                                       {'request': request,
                                        'collections': collections,

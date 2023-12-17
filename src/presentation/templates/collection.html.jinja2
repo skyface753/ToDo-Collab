@@ -12,7 +12,7 @@
   <body onload="init()">
     <main>
     <h1>WebSocket Chat</h1>
-    <h2>Your ID: <span id="ws-id"> {{user.id}} </span></h2>
+    <h2>Your ID: <span id="ws-id"> {{user.name}} </span></h2>
     <h2>Collection: {{collection.name}}</h2>
     <form action="" onsubmit="sendMessage(event)">
       {# Message Input #}
@@ -34,7 +34,7 @@
       {# Message Input #}
       <input
         type="text"
-        id="user_id_to_add"
+        id="user_name_to_add"
         autocomplete="off"
         placeholder="User ID"
       />
@@ -42,7 +42,7 @@
     </form>
     <section class="items" id="todos"></section>
     <script>
-      user_id = '{{user._id}}';
+      user_name = '{{user.name}}';
       var ws = new WebSocket(
         `ws://localhost:8000/api/v1/todo/ws/{{collection.id}}?token={{token}}`
       );
@@ -97,11 +97,11 @@
       async function addToCollection(event) {
         event.preventDefault();
         // Send to server put with fetch
-        var user_id_to_add = document.getElementById('user_id_to_add');
-        var user_id_to_add_value = user_id_to_add.value;
+        var user_name_to_add = document.getElementById('user_name_to_add');
+        var user_name_to_add_value = user_name_to_add.value;
         var url = '/api/v1/member/create';
         var data = {
-          user_id: user_id_to_add_value,
+          user_name: user_name_to_add_value,
           collection_id: '{{collection.id}}',
         };
         const response = await fetch(url, {
@@ -124,7 +124,7 @@
 
         const content = await response.json();
         console.log(content);
-        user_id_to_add.value = '';
+        user_name_to_add.value = '';
       }
     </script>
     </main>

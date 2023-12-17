@@ -40,7 +40,7 @@ def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     headers = {'Location': url}
     username = user.name
     data = {'message': 'Logged in as ' + username, 'access_token': access_token,
-            'user': user.model_dump(exclude=['password'])}
+            'user': user.model_dump()}
     rsp = Response(content=json_util.dumps(data), media_type='application/json',
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, access_token)

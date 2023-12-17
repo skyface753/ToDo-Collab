@@ -2,9 +2,9 @@ from fastapi import WebSocket
 
 
 class active_connection:
-    def __init__(self, websocket: WebSocket, user_id, collection_id):
+    def __init__(self, websocket: WebSocket, user_name, collection_id):
         self.websocket = websocket
-        self.user_id = user_id
+        self.user_name = user_name
         self.collection_id = collection_id
 
 
@@ -12,10 +12,10 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections: list[active_connection] = []
 
-    async def connect(self, websocket: WebSocket, user_id, collection_id):
+    async def connect(self, websocket: WebSocket, user_name, collection_id):
         await websocket.accept()
         self.active_connections.append(
-            active_connection(websocket, user_id, collection_id))
+            active_connection(websocket, user_name, collection_id))
 
     def disconnect(self, websocket: WebSocket):
         for connection in self.active_connections:

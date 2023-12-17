@@ -14,7 +14,7 @@
     <script src='/static/js/collections.js'></script>
   </head>
   <body onload="init()">
-    <h1>Hello {{user.id}}</h1>
+    <h1>Hello {{user.name}}</h1>
     <section class="items">
       {% for collection in collections %}
         <article class="item" onclick="window.location.href='{{url_for('collection', collection_id=collection.id)}}'">
