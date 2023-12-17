@@ -2,7 +2,7 @@
 name = "todo_collab"
 version = "1.0.0"
 description = "A simple todo app with collaboration features"
-authors = ["Sebastian Joerz <sjoerz@skyface.de"]
+authors = ["Sebastian Joerz <sjoerz@skyface.de>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
