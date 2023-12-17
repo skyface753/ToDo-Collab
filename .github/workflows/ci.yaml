@@ -15,8 +15,6 @@ jobs:
           python-version: '3.11'
       - run: pip install poetry
       - run: poetry install
-      - run: poetry run flakeheaven --version
-      - run: poetry run flakeheaven lint --version
-      - run: pip install flake8 flakeheaven
+      - run: pip install flake8 flakeheaven flake8-commas flake8-quotes
       - name: lint
         run: flakeheaven lint src/ tests/
