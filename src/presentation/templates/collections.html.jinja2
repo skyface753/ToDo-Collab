@@ -25,26 +25,16 @@
   </form>
 </section>
 <h1>Hello {{ user.name }}</h1>
-<button onclick="showCreateCollectionOverlay()" class="btn pmd-btn-fab pmd-ripple-effect btn-primary position-absolute bottom-0 end-0 rounded-circle" type="button"><i class="material-icons pmd-sm">star</i></button>
 
-{# <button onclick="showCreateCollectionOverlay()"
-  class="fixed right-4 bottom-4 text-white px-4 w-auto h-8 bg-blue-600 rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
->
-  <svg
-    viewBox="0 0 20 20"
-    enable-background="new 0 0 20 20"
-    class="w-4 h-4 inline-block mr-1"
-  >
-    <path
-      fill="#FFFFFF"
-      d="M17.561,2.439c-1.442-1.443-2.525-1.227-2.525-1.227L8.984,7.264L2.21,14.037L1.2,18.799l4.763-1.01
-                                    l6.774-6.771l6.052-6.052C18.788,4.966,19.005,3.883,17.561,2.439z M5.68,17.217l-1.624,0.35c-0.156-0.293-0.345-0.586-0.69-0.932
-                                    c-0.346-0.346-0.639-0.533-0.932-0.691l0.35-1.623l0.47-0.469c0,0,0.883,0.018,1.881,1.016c0.997,0.996,1.016,1.881,1.016,1.881
-                                    L5.68,17.217z"
-    />
-  </svg>
-  <span>Extended</span>
-</button> #}
+<button onclick="showCreateCollectionOverlay()"
+                class="text-white fixed right-4 bottom-4 px-4 w-auto h-10 bg-blue-600 rounded-full hover:bg-blue-900 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
+          <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block mr-1">
+            <path fill="#FFFFFF" d="M17.19,4.155c-1.672-1.534-4.383-1.534-6.055,0L10,5.197L8.864,4.155c-1.672-1.534-4.382-1.534-6.054,0
+                                    c-1.881,1.727-1.881,4.52,0,6.246L10,17l7.19-6.599C19.07,8.675,19.07,5.881,17.19,4.155z"/>
+          </svg>
+          <span>Create Collection</span>
+        </button>
+
 <section class="items">
   {% for collection in collections %}
   <article

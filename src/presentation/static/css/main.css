@@ -219,17 +219,21 @@ header,
 }
 
 input[type='text'] {
-  @apply block w-full px-3 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
+  @apply block w-full px-3 py-2 mt-1 text-onSurface bg-surface-50 border border-secondary rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-primary-800 focus:border-primary-800 sm:text-sm;
 }
 
-button {
-  @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+input[type='password'] {
+  @apply block w-full px-3 py-2 mt-1 text-onSurface bg-surface-50 border border-secondary rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-primary-800 focus:border-primary-800 sm:text-sm;
+}
+
+.btn-primary {
+  @apply bg-primary-700 hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-700 text-onBackground font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out;
 }
 
 .navbar-li {
-  @apply block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent;
+  @apply block py-2 px-3 text-onBackground rounded hover:bg-onBackground md:hover:bg-transparent md:border-0 md:hover:text-primary-400 md:p-0 dark:text-onBackground md:dark:hover:text-primary-500 dark:hover:bg-primary-800 dark:hover:text-onBackground md:dark:hover:bg-transparent;
 }
 
 .navbar-li.active {
-  @apply block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500;
+  @apply block py-2 px-3 text-onBackground bg-onBackground rounded md:bg-transparent md:text-primary-800 md:p-0 dark:text-onBackground md:dark:text-primary-800;
 }
