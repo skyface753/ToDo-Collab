@@ -16,7 +16,6 @@ from src.handler.auth import auth_manager, NotAuthenticatedException
 IS_DEV = True
 app = FastAPI()
 
-
 app.mount('/static', StaticFiles(directory='src/presentation/static'), name='static')
 
 

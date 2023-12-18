@@ -1,3 +1,8 @@
+/* Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Root colors vars */
 :root {
   --primary-color: #bb86fc;
@@ -22,9 +27,9 @@
 /* Global styles */
 
 body {
-  margin: 0;
+  margin: 0rem;
   font-family: 'Roboto', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   background-color: var(--background);
   color: var(--on-background);
 }
@@ -139,7 +144,7 @@ header,
 .item-info > * {
   margin: 0.2rem;
 }
-button {
+/* button {
   color: var(--on-primary);
   background-color: var(--primary-color);
   border-radius: 0.5rem;
@@ -158,9 +163,16 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.floating-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1;
+}
+
 .button-delete {
   background-color: var(--error) !important;
-}
+} */
 
 .item-name {
   font-weight: bold;
@@ -178,28 +190,6 @@ button:disabled {
   font-size: 1.2rem;
   font-weight: bold;
   text-align: center;
-}
-
-.warenkorb-summe {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 0.5rem;
-  text-align: right;
-}
-
-.warenkorb-footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: left;
-  margin: 1rem;
-}
-
-.warenkorb-footer > input {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid gray;
 }
 
 .topnav {
@@ -258,10 +248,17 @@ button:disabled {
 }
 
 input[type='text'] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  /* round border */
-  border-radius: 4px;
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+input[type='password'] {
+  @apply shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none;
+}
+
+.navbar-li {
+  @apply block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent;
+}
+
+.navbar-li.active {
+  @apply block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500;
 }

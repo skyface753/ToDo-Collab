@@ -18,7 +18,14 @@ sonar:
 	sonar-scanner \
 		-Dsonar.projectKey=todo \
 		-Dsonar.sources=. \
-		-Dsonar.host.url=http://10.2.0.104:9000 \
+		-Dsonar.host.url=http://10.2.0.110:9000 \
 		-Dsonar.token=${SONAR_TOKEN} \
 		-Dsonar.python.coverage.reportPaths=coverage.xml \
 		-Dsonar.coverage.exclusions=tests/**,**/router.py,**/src/presentation/**,**/src/models/**,**/src/handler/**,**/src/config/**,**/src/*.py
+
+poetry:
+	poetry lock
+	poetry install
+
+tailwind:
+	tailwindcss -i src/presentation/static/css/main.css -o src/presentation/static/css/tailwind.min.css --minify --watch

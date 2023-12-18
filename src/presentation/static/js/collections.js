@@ -13,7 +13,7 @@ function init() {
   });
 
   document
-    .getElementById('create-collection')
+    .getElementById('create-collection-form')
     .addEventListener('submit', function (e) {
       e.preventDefault();
       let name = document.getElementById('create-collection-name').value;
@@ -36,4 +36,12 @@ function init() {
           console.log(error);
         });
     });
+}
+
+function showCreateCollectionOverlay() {
+  document.getElementById('overlay').style.display = 'block';
+}
+
+function hideCreateCollectionOverlay() {
+  document.getElementById('overlay').style.display = 'none';
 }

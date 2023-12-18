@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, Request, Response, HTTPException
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from src.handler.auth import auth_manager
 from src.handler.auth import query_user
 from fastapi.security import OAuth2PasswordRequestForm
@@ -89,3 +89,11 @@ def delete_account(data: OAuth2PasswordRequestForm = Depends()):
     user_logic.delete_user_cascade(user)
 
     return {'message': 'User deleted'}
+
+
+@router.get('/logout', status_code=status.HTTP_200_OK)
+def logout(response: Response, request: Request):
+    response = RedirectResponse(request.url_for(
+        'login'), status_code=status.HTTP_303_SEE_OTHER)
+    response.delete_cookie('access-token')
+    return response

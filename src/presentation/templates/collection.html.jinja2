@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+{# <!DOCTYPE html>
 <html>
   <head>
-    <title>Chat</title>
+    <title>{{collection.name}}</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -10,10 +10,42 @@
     />
   </head>
   <body onload="init()">
-    <main>
-    <h1>WebSocket Chat</h1>
+    
+    <script>
+      
+    </script>
+  </body>
+</html>
+
+ #}
+
+
+
+{% extends "layout.html.jinja2" %} 
+
+{% block title %} {{collection.name}} {% endblock%} 
+
+{# {% block styles %}
+<link rel="stylesheet" href="/static/css/collection.css" />
+{% endblock %}  #}
+
+{% block scripts %}
+<script src="/static/js/collection.js" defer></script>
+{% endblock %} 
+
+{% set active_page = 'home' %}
+
+{% set onloadFunction = "init()" %} 
+
+{% block content %}
+<main>
+    {# Hidden vars like: collection.id, user.name #}
+    <input type="hidden" id="collection_id" value="{{collection.id}}" />
+    <input type="hidden" id="user_name" value="{{user.name}}" />
+    <input type="hidden" id="token" value="{{token}}" />
+    <h1>{{collection.name}}</h1>
     <h2>Your ID: <span id="ws-id"> {{user.name}} </span></h2>
-    <h2>Collection: {{collection.name}}</h2>
+    {# <h2>Collection: {{collection.name}}</h2> #}
     <form action="" onsubmit="sendMessage(event)">
       {# Message Input #}
       <input
@@ -41,92 +73,18 @@
       <button class="secondary">Add to {{collection.id}}</button>
     </form>
     <section class="items" id="todos"></section>
-    <script>
-      user_name = '{{user.name}}';
-      var ws = new WebSocket(
-        `ws://localhost:8000/api/v1/todo/ws/{{collection.id}}?token={{token}}`
-      );
-      ws.onmessage = function (event) {
-        var todos = document.getElementById('todos');
-        try {
-          var todo = JSON.parse(event.data);
-          processTodo(todo);
-          console.log("Received: '" + event.data + "'");
-        } catch (e) {
-          console.log(event.data);
-        }
-      };
-      function init() {
-        json = {{todossosos|tojson|safe}};
-        console.log(json);
-        json.forEach((todo) => {
-          todo = JSON.parse(todo);
-          processTodo({
-            title: todo.title,
-            description: todo.description,
-          });
-        });
-      }
-      function processTodo(todo) {
-        var todos = document.getElementById('todos');
-        var todoItem = document.createElement('article');
-        todoItem.className = 'item';
-        var todoTitle = document.createElement('h3');
-        var todoDescription = document.createElement('p');
-        todoTitle.textContent = todo.title;
-        todoDescription.textContent = todo.description;
-        todoItem.appendChild(todoTitle);
-        todoItem.appendChild(todoDescription);
-        todos.appendChild(todoItem);
-      }
-      function sendMessage(event) {
-        var todoTitle = document.getElementById('todoTitle');
-        var todoDescription = document.getElementById('todoDescription');
-        // To jsson
-        var todo = {
-          title: todoTitle.value,
-          description: todoDescription.value,
-        };
-        // To string
-        var todoString = JSON.stringify(todo);
-        ws.send(todoString);
-        todoTitle.value = '';
-        todoDescription.value = '';
-        event.preventDefault();
-      }
-      async function addToCollection(event) {
-        event.preventDefault();
-        // Send to server put with fetch
-        var user_name_to_add = document.getElementById('user_name_to_add');
-        var user_name_to_add_value = user_name_to_add.value;
-        var url = '/api/v1/member/create';
-        var data = {
-          user_name: user_name_to_add_value,
-          collection_id: '{{collection.id}}',
-        };
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => {
-            if (response.redirected) {
-              alert('User already in collection');
-            } else {
-              return response;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-
-        const content = await response.json();
-        console.log(content);
-        user_name_to_add.value = '';
-      }
-    </script>
     </main>
-  </body>
-</html>
+    <script>
+    function init() {
+  json = {{todossosos|tojson|safe}};
+  console.log(json);
+  json.forEach((todo) => {
+    todo = JSON.parse(todo);
+    processTodo({
+      title: todo.title,
+      description: todo.description,
+    });
+  });
+}
+    </script>
+{% endblock %}

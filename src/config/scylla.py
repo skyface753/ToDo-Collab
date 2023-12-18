@@ -12,8 +12,9 @@ cluster = Cluster(['127.0.0.1'], auth_provider=auth_provider)
 session = cluster.connect()
 KEYSPACE = 'test'
 
-# Clear keyspace
-session.execute('DROP KEYSPACE IF EXISTS %s' % KEYSPACE)
+
+def clear_keyspace():
+    session.execute('DROP KEYSPACE IF EXISTS %s' % KEYSPACE)
 
 
 session.execute("""
