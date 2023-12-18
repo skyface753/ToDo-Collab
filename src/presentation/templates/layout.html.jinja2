@@ -5,22 +5,20 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="/static/css/tailwind.min.css" />
+        <link rel="stylesheet" href="/static/css/main.tailwind.min.css" />
         <script src="/static/js/nav.js" defer></script>
-        {# <link rel="stylesheet" href="/static/css/main.css" /> #}
         {% block styles %}{% endblock %}
         {% block scripts %}{% endblock %}
     </head>
     {% if onloadFunction %}
-        <body onload="{{ onloadFunction }}">
+        <body onload="{{ onloadFunction }}" class="bg-gray-50 dark:bg-gray-900">
     {% else %}
-        <body>
+        <body class="bg-gray-50 dark:bg-gray-900">
     {% endif %} 
-
-    {% include 'nav.html.jinja2' %}
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+        {% include 'nav.html.jinja2' %}
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
     </body>
 </html>

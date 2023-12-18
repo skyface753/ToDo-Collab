@@ -48,8 +48,8 @@ def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get('/register', response_class=HTMLResponse, name='register')
-def register_page(request: Request):
-    return templates.TemplateResponse('register.html.jinja2', {'request': request})
+def register_page(request: Request, error: str = None):
+    return templates.TemplateResponse('register.html.jinja2', {'request': request, 'error': error})
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED)
@@ -59,8 +59,13 @@ def register(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     # Check if user exists
     user = query_user(username)
     if user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail='User already exists')
+        url = str(request.url_for('register').include_query_params(
+            error='User already exists'))
+        headers = {'Location': url}
+        rsp = Response(content=json_util.dumps({'message': 'User already exists'}),
+                       media_type='application/json',
+                       status_code=status.HTTP_303_SEE_OTHER, headers=headers)
+        return rsp
     user = UserModel(name=username, password=password)
     user_crud.create(user)
     url = str(request.url_for('collections'))

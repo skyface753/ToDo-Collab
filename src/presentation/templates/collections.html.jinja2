@@ -25,13 +25,9 @@
   </form>
 </section>
 <h1>Hello {{ user.name }}</h1>
+<button onclick="showCreateCollectionOverlay()" class="btn pmd-btn-fab pmd-ripple-effect btn-primary position-absolute bottom-0 end-0 rounded-circle" type="button"><i class="material-icons pmd-sm">star</i></button>
 
-{#
-<button class="float-right" onclick="showCreateCollectionOverlay()">
-  Create Collection
-</button>
-#}
-<button onclick="showCreateCollectionOverlay()"
+{# <button onclick="showCreateCollectionOverlay()"
   class="fixed right-4 bottom-4 text-white px-4 w-auto h-8 bg-blue-600 rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
 >
   <svg
@@ -48,7 +44,7 @@
     />
   </svg>
   <span>Extended</span>
-</button>
+</button> #}
 <section class="items">
   {% for collection in collections %}
   <article

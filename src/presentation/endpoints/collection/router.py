@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends, status, Request
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 import src.api.v1.endpoints.todo.crud as todo_crud
 import src.api.v1.endpoints.collection.crud as collection_crud
 import src.logic.collection as collection_logic
 from src.handler.auth import auth_manager
-router = APIRouter()
+from src.config.templates import templates
 
-templates = Jinja2Templates(directory='src/presentation/templates')
+router = APIRouter()
 
 
 @router.get('/', response_class=HTMLResponse, name='collections')

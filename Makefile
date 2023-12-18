@@ -2,7 +2,10 @@
 run: 
 	CASSANDRA_PASSWORD=${CASSANDRA_PASSWORD} python3 -m src
 
-test: lint integration_tests service_tests sonar
+test: clear_db lint integration_tests service_tests sonar
+
+clear_db:
+	CASSANDRA_PASSWORD=${CASSANDRA_PASSWORD} python src/config/scylla.py
 
 lint:
 	flakeheaven lint src/ tests/
@@ -28,4 +31,4 @@ poetry:
 	poetry install
 
 tailwind:
-	tailwindcss -i src/presentation/static/css/main.css -o src/presentation/static/css/tailwind.min.css --minify --watch
+	tailwindcss -i src/presentation/static/css/main.css -o src/presentation/static/css/main.tailwind.min.css --minify --watch

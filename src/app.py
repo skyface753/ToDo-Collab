@@ -2,7 +2,6 @@ from bson import json_util
 from fastapi import FastAPI, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from src.presentation.endpoints.todo.router import router as todo_router
 from src.api.v1.endpoints.todo.router import router as todo_router_api
 from src.presentation.endpoints.collection.router import router as collection_router
 from src.api.v1.endpoints.member.router import router as member_router_api
@@ -31,17 +30,17 @@ def get(request: Request, user=Depends(auth_manager)):
                             status_code=status.HTTP_303_SEE_OTHER)
 
 
-# Chat
-app.include_router(todo_router, prefix='/todo', tags=['todo'])
-app.include_router(todo_router_api, prefix='/api/v1/todo',
-                   tags=['todo/api/v1'])
+# Jinja Presentation
+app.include_router(auth_router, prefix='/auth', tags=['auth'])
 app.include_router(collection_router, prefix='/collection',
                    tags=['collection'])
+# API
+app.include_router(todo_router_api, prefix='/api/v1/todo',
+                   tags=['todo/api/v1'])
 app.include_router(member_router_api, prefix='/api/v1/member',
                    tags=['member/api/v1'])
 app.include_router(collection_router_api, prefix='/api/v1/collection',
                    tags=['collection/api/v1'])
-app.include_router(auth_router, prefix='/auth', tags=['auth'])
 
 
 @app.exception_handler(NotAuthenticatedException)

@@ -23,3 +23,7 @@ session.execute("""
     """ % KEYSPACE)
 
 session.set_keyspace(KEYSPACE)
+
+# Call clear_keyspace if main
+if __name__ == '__main__':
+    clear_keyspace()
