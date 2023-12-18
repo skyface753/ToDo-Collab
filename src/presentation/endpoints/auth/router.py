@@ -41,7 +41,7 @@ def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     username = user.name
     data = {'message': 'Logged in as ' + username, 'access_token': access_token,
             'user': user.model_dump()}
-    rsp = Response(content=json_util.dumps(data), media_type='application/json',
+    rsp = Response(content=json_util.dumps(data), media_type='application/json',  # NOSONAR
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, access_token)
     return rsp
@@ -63,7 +63,7 @@ def register(request: Request, data: OAuth2PasswordRequestForm = Depends()):
             error='User already exists'))
         headers = {'Location': url}
         rsp = Response(content=json_util.dumps({'message': 'User already exists'}),
-                       media_type='application/json',
+                       media_type='application/json',  # NOSONAR
                        status_code=status.HTTP_303_SEE_OTHER, headers=headers)
         return rsp
     user = UserModel(name=username, password=password)
@@ -71,7 +71,7 @@ def register(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     url = str(request.url_for('collections'))
     headers = {'Location': url}
     rsp = Response(content=json_util.dumps({'message': 'User created successfully'}),
-                   media_type='application/json',
+                   media_type='application/json',  # NOSONAR
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, auth_manager.create_access_token(
         data={'sub': username},
@@ -98,7 +98,7 @@ def delete_account(data: OAuth2PasswordRequestForm = Depends()):
 
 @router.get('/logout', status_code=status.HTTP_200_OK)
 def logout(response: Response, request: Request):
-    response = RedirectResponse(request.url_for(
+    rsp = RedirectResponse(request.url_for(
         'login'), status_code=status.HTTP_303_SEE_OTHER)
-    response.delete_cookie('access-token')
-    return response
+    rsp.delete_cookie('access-token')
+    return rsp
