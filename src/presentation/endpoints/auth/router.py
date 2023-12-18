@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, Request, Response, HTTPException
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from src.handler.auth import auth_manager
 from src.handler.auth import query_user
 from fastapi.security import OAuth2PasswordRequestForm
@@ -40,16 +40,16 @@ def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     headers = {'Location': url}
     username = user.name
     data = {'message': 'Logged in as ' + username, 'access_token': access_token,
-            'user': user.model_dump(exclude=['password'])}
-    rsp = Response(content=json_util.dumps(data), media_type='application/json',
+            'user': user.model_dump()}
+    rsp = Response(content=json_util.dumps(data), media_type='application/json',  # NOSONAR
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, access_token)
     return rsp
 
 
 @router.get('/register', response_class=HTMLResponse, name='register')
-def register_page(request: Request):
-    return templates.TemplateResponse('register.html.jinja2', {'request': request})
+def register_page(request: Request, error: str = None):
+    return templates.TemplateResponse('register.html.jinja2', {'request': request, 'error': error})
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED)
@@ -59,14 +59,19 @@ def register(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     # Check if user exists
     user = query_user(username)
     if user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail='User already exists')
+        url = str(request.url_for('register').include_query_params(
+            error='User already exists'))
+        headers = {'Location': url}
+        rsp = Response(content=json_util.dumps({'message': 'User already exists'}),
+                       media_type='application/json',  # NOSONAR
+                       status_code=status.HTTP_303_SEE_OTHER, headers=headers)
+        return rsp
     user = UserModel(name=username, password=password)
     user_crud.create(user)
     url = str(request.url_for('collections'))
     headers = {'Location': url}
     rsp = Response(content=json_util.dumps({'message': 'User created successfully'}),
-                   media_type='application/json',
+                   media_type='application/json',  # NOSONAR
                    status_code=status.HTTP_303_SEE_OTHER, headers=headers)
     auth_manager.set_cookie(rsp, auth_manager.create_access_token(
         data={'sub': username},
@@ -89,3 +94,11 @@ def delete_account(data: OAuth2PasswordRequestForm = Depends()):
     user_logic.delete_user_cascade(user)
 
     return {'message': 'User deleted'}
+
+
+@router.get('/logout', status_code=status.HTTP_200_OK)
+def logout(response: Response, request: Request):
+    rsp = RedirectResponse(request.url_for(
+        'login'), status_code=status.HTTP_303_SEE_OTHER)
+    rsp.delete_cookie('access-token')
+    return rsp

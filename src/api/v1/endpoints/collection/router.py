@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.get('', response_model=List[CollectionModel])
 def get_collections(user=Depends(auth_manager)):
-    collections = collection_logic.find_collections_for_user(user.id)
+    collections = collection_logic.find_collections_for_user(user.name)
     return collections
 
 
@@ -33,8 +33,8 @@ def get_collection(collection_id: str, user=Depends(auth_manager)):
 
 @router.delete('/{collection_id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_collection(collection_id: str, user=Depends(auth_manager)):
-    is_member = member_crud.find_by_user_id_and_collection_id(
-        str(user.id), collection_id)
+    is_member = member_crud.find_by_user_name_and_collection_id(
+        user.name, collection_id)
     if not is_member:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='User is not a member of this collection')

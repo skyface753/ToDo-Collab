@@ -1,0 +1,24 @@
+{% extends "layout.html.jinja2" %}
+
+{# Title #}
+{% block title %} My Collections {% endblock%} 
+{# Extra Styles #}
+{% block styles %}
+    <link rel="stylesheet" href="/static/css/collections.css" />
+{% endblock %} 
+{# Scripts #}
+{% block scripts %}
+  <script src="/static/js/collections.js"></script>
+{% endblock %} 
+    
+{# Active Page for Navigation #}
+{% set active_page = 'home' %}
+
+{# Body onload function  #}
+{% set onloadFunction = 'init()' %} 
+    
+{# Content #}
+{% block content %}
+<h1>My Collections</h1>
+{% endblock %}
+    

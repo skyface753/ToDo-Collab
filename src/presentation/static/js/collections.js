@@ -1,9 +1,11 @@
 function init() {
   window.addEventListener('pageshow', function (event) {
-    var historyTraversal =
+    const historyTraversal =
       event.persisted ||
       (typeof window.performance != 'undefined' &&
-        window.performance.navigation.type === 2);
+        window.performance.getEntriesByType('navigation').length &&
+        window.performance.getEntriesByType('navigation')[0].type ===
+          'back_forward');
     if (historyTraversal) {
       // Handle page restore.
       window.location.reload();
@@ -11,7 +13,7 @@ function init() {
   });
 
   document
-    .getElementById('create-collection')
+    .getElementById('create-collection-form')
     .addEventListener('submit', function (e) {
       e.preventDefault();
       let name = document.getElementById('create-collection-name').value;
@@ -28,10 +30,18 @@ function init() {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          window.location.href = '/collection/' + data._id;
+          window.location.href = '/collection/' + data.id;
         })
         .catch((error) => {
           console.log(error);
         });
     });
+}
+
+function showCreateCollectionOverlay() {
+  document.getElementById('overlay').style.display = 'block';
+}
+
+function hideCreateCollectionOverlay() {
+  document.getElementById('overlay').style.display = 'none';
 }

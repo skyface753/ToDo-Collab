@@ -20,7 +20,7 @@ stages:
       status_code: 200
       json:
         name: '{collection_name:s}'
-        _id: '{collection_id:s}'
+        id: '{collection_id:s}'
   - name: Get my collections
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection
@@ -29,7 +29,7 @@ stages:
       status_code: 200
       json:
         - name: '{collection_name:s}'
-          _id: '{collection_id:s}'
+          id: '{collection_id:s}'
   - type: ref
     id: register_not_member_user
   - type: ref

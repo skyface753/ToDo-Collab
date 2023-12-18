@@ -6,11 +6,11 @@ import src.api.v1.endpoints.todo.crud as todo_crud
 
 
 def delete_user_cascade(user: UserModel):
-    user_crud.delete_by_id(user.id)
-    deleted_members = member_crud.delete_by_user_id(str(user.id))
+    user_crud.delete_by_name(user.name)
+    deleted_members = member_crud.delete_by_user_name(user.name)
     for member in deleted_members:
         has_members = member_crud.find_by_collection_id(member.collection_id)
         if not has_members:
             collection_crud.delete_by_id(member.collection_id)
             todo_crud.delete_by_collection_id(member.collection_id)
-    todo_crud.delete_by_user_id(user.id)
+    todo_crud.delete_by_user_name(user.name)

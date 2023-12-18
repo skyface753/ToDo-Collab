@@ -18,10 +18,10 @@ stages:
       status_code: 201
       json:
         name: '{collection_name:s}'
-        _id: !anything
+        id: !anything
       save:
         json:
-          collection_id: _id
+          collection_id: id
 
   - id: delete_collection
     name: Delete collection with id

@@ -51,7 +51,7 @@ stages:
         access_token: !anything
         user:
           name: '{username:s}'
-          id: !anystr
+          password: '********'
       save:
         json:
           access_token: access_token
@@ -73,7 +73,7 @@ stages:
         access_token: !anything
         user:
           name: '{username_2:s}'
-          id: !anystr
+          password: '********'
       save:
         json:
           access_token_2: access_token

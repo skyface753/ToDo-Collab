@@ -1,30 +1,59 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>My Collections</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      href="/static/css/main.css"
+{% extends "layout.html.jinja2" %} {% block title %} My Collections {% endblock
+%} {% block styles %}
+<link rel="stylesheet" href="/static/css/collections.css" />
+{% endblock %} {% block scripts %}
+<script src="/static/js/collections.js"></script>
+{% endblock %} 
+
+{% set active_page = 'home' %}
+
+{% set onloadFunction = 'init()' %} {% block content %}
+<section id="overlay" onclick="hideCreateCollectionOverlay()">
+  <form
+    id="create-collection-form"
+    class="overlay-box"
+    onsubmit="createCollection(event)"
+    onclick="event.stopPropagation()"
+  >
+    <input
+      type="text"
+      name="name"
+      placeholder="Collection Name"
+      id="create-collection-name"
     />
-    <script src='/static/js/collections.js'></script>
-  </head>
-  <body onload="init()">
-    <h1>Hello {{user.id}}</h1>
-    <section class="items">
-      {% for collection in collections %}
-        <article class="item" onclick="window.location.href='{{url_for('collection', collection_id=collection.id)}}'">
-          <h1>{{collection.name}}</h1>
-        </article>
-    {% endfor %}
-      </section>
-      <form id="create-collection">
-        <input type="text" name="name" placeholder="Collection Name" id="create-collection-name" />
-        <input type="submit" value="Add Collection" />
-      </form>
-  </body>
-</html>
+    <button type="submit" id="create-collection-submit">Create</button>
+  </form>
+</section>
+<h1>Hello {{ user.name }}</h1>
+<button onclick="showCreateCollectionOverlay()" class="btn pmd-btn-fab pmd-ripple-effect btn-primary position-absolute bottom-0 end-0 rounded-circle" type="button"><i class="material-icons pmd-sm">star</i></button>
+
+{# <button onclick="showCreateCollectionOverlay()"
+  class="fixed right-4 bottom-4 text-white px-4 w-auto h-8 bg-blue-600 rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+>
+  <svg
+    viewBox="0 0 20 20"
+    enable-background="new 0 0 20 20"
+    class="w-4 h-4 inline-block mr-1"
+  >
+    <path
+      fill="#FFFFFF"
+      d="M17.561,2.439c-1.442-1.443-2.525-1.227-2.525-1.227L8.984,7.264L2.21,14.037L1.2,18.799l4.763-1.01
+                                    l6.774-6.771l6.052-6.052C18.788,4.966,19.005,3.883,17.561,2.439z M5.68,17.217l-1.624,0.35c-0.156-0.293-0.345-0.586-0.69-0.932
+                                    c-0.346-0.346-0.639-0.533-0.932-0.691l0.35-1.623l0.47-0.469c0,0,0.883,0.018,1.881,1.016c0.997,0.996,1.016,1.881,1.016,1.881
+                                    L5.68,17.217z"
+    />
+  </svg>
+  <span>Extended</span>
+</button> #}
+<section class="items">
+  {% for collection in collections %}
+  <article
+    class="item"
+    onclick="window.location.href='{{url_for('collection', collection_id=collection.id)}}'"
+  >
+    <h1>{{ collection.name }}</h1>
+  </article>
+  {% endfor %}
+</section>
+
+{% endblock %}
