@@ -3,46 +3,43 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from src.handler.auth import auth_manager
 from src.handler.auth import query_user
-from fastapi.security import OAuth2PasswordRequestForm
 import bcrypt
 from fastapi_login.exceptions import InvalidCredentialsException
 from bson import json_util
 from src.models.models import UserModel
 import src.api.v1.endpoints.user.crud as user_crud
 import src.logic.user as user_logic
-
+import datetime
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory='src/presentation/templates')
 
+timedelta_default = auth_manager.default_expiry
+timedelta_remember = datetime.timedelta(days=30)
+
 
 @router.get('/login', response_class=HTMLResponse, name='login')
-def login_page(request: Request):
-    return templates.TemplateResponse('login.html.jinja2', {'request': request})
+def login_page(request: Request, error: str = None):
+    return templates.TemplateResponse('login.html.jinja2', {'request': request, 'error': error})
 
 
 @router.post('/login', status_code=status.HTTP_200_OK)
-def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
-    username = data.username
-    password = data.password
-    user = query_user(username)
-    if not user or not bcrypt.checkpw(bytes(password, 'utf-8'),
+def login(request: Request, login_user: UserModel, remember: bool = False):
+    user = query_user(login_user.name)
+    if not user or not bcrypt.checkpw(bytes(login_user.password, 'utf-8'),
                                       bytes(user.password, 'utf-8')):
-        raise InvalidCredentialsException
+        return InvalidCredentialsException
 
     access_token = auth_manager.create_access_token(
-        data={'sub': username},
+        data={'sub': user.name},
+        expires=timedelta_remember if remember else timedelta_default,
     )
     user.password = None
-    url = str(request.url_for('collections'))
-    print(url)
-    headers = {'Location': url}
-    username = user.name
-    data = {'message': 'Logged in as ' + username, 'access_token': access_token,
+    data = {'message': 'Logged in as ' + user.name, 'access_token': access_token,
             'user': user.model_dump()}
-    rsp = Response(content=json_util.dumps(data), media_type='application/json',  # NOSONAR
-                   status_code=status.HTTP_303_SEE_OTHER, headers=headers)
+    rsp = Response(content=json_util.dumps(data),
+                   media_type='application/json')  # NOSONAR
     auth_manager.set_cookie(rsp, access_token)
     return rsp
 
@@ -53,44 +50,30 @@ def register_page(request: Request, error: str = None):
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED)
-def register(request: Request, data: OAuth2PasswordRequestForm = Depends()):
-    username = data.username
-    password = data.password
+def register(request: Request, register_user: UserModel, remember: bool = False):
     # Check if user exists
-    user = query_user(username)
+    user = query_user(register_user.name)
     if user:
-        url = str(request.url_for('register').include_query_params(
-            error='User already exists'))
-        headers = {'Location': url}
-        rsp = Response(content=json_util.dumps({'message': 'User already exists'}),
-                       media_type='application/json',  # NOSONAR
-                       status_code=status.HTTP_303_SEE_OTHER, headers=headers)
-        return rsp
-    user = UserModel(name=username, password=password)
-    user_crud.create(user)
-    url = str(request.url_for('collections'))
-    headers = {'Location': url}
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail='User already exists')
+    user_crud.create(register_user)
     rsp = Response(content=json_util.dumps({'message': 'User created successfully'}),
                    media_type='application/json',  # NOSONAR
-                   status_code=status.HTTP_303_SEE_OTHER, headers=headers)
+                   status_code=status.HTTP_201_CREATED)
     auth_manager.set_cookie(rsp, auth_manager.create_access_token(
-        data={'sub': username},
+        data={'sub': register_user.name},
+        expires=timedelta_remember if remember else timedelta_default,
     ))
     return rsp
 
 
 @router.delete('/delete', status_code=status.HTTP_204_NO_CONTENT)
-def delete_account(data: OAuth2PasswordRequestForm = Depends()):
-    username = data.username
-    password = data.password
+def delete_account(user=Depends(auth_manager)):
     # Check if user exists
-    user = query_user(username)
+    user = query_user(user.name)
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail='User does not exist')
-    if not bcrypt.checkpw(bytes(password, 'utf-8'),
-                          bytes(user.password, 'utf-8')):
-        raise InvalidCredentialsException
     user_logic.delete_user_cascade(user)
 
     return {'message': 'User deleted'}

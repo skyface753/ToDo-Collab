@@ -14,12 +14,12 @@ stages:
     name: Register user
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/register
-      data:
-        username: '{username:s}'
+      json:
+        name: '{username:s}'
         password: '{password:s}'
       method: POST
     response:
-      status_code: 303
+      status_code: 201
       json:
         message: User created successfully
 
@@ -27,12 +27,12 @@ stages:
     name: Register a user, which is not a member of the collection
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/register
-      data:
-        username: '{username_2:s}'
+      json:
+        name: '{username_2:s}'
         password: '{password_2:s}'
       method: POST
     response:
-      status_code: 303
+      status_code: 201
       json:
         message: User created successfully
 
@@ -40,12 +40,12 @@ stages:
     name: Login user
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/login
-      data:
-        username: '{username:s}'
+      json:
+        name: '{username:s}'
         password: '{password:s}'
       method: POST
     response:
-      status_code: 303
+      status_code: 200
       json:
         message: Logged in as {username:s}
         access_token: !anything
@@ -62,12 +62,12 @@ stages:
     name: Login user, which is not a member of the collection
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/login
-      data:
-        username: '{username_2:s}'
+      json:
+        name: '{username_2:s}'
         password: '{password_2:s}'
       method: POST
     response:
-      status_code: 303
+      status_code: 200
       json:
         message: Logged in as {username_2:s}
         access_token: !anything
@@ -85,8 +85,8 @@ stages:
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/delete
       method: DELETE
-      data:
-        username: '{username:s}'
+      json:
+        name: '{username:s}'
         password: '{password:s}'
     response:
       status_code: 204
@@ -96,8 +96,8 @@ stages:
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/delete
       method: DELETE
-      data:
-        username: '{username_2:s}'
+      json:
+        name: '{username_2:s}'
         password: '{password_2:s}'
     response:
       status_code: 204

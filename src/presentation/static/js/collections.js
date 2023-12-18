@@ -27,10 +27,15 @@ function init() {
           name: name,
         }),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else {
+            throw new Error('Something went wrong');
+          }
+        })
         .then((data) => {
-          console.log(data);
-          window.location.href = '/collection/' + data.id;
+          if (data.id) window.location.href = '/collection/' + data.id;
         })
         .catch((error) => {
           console.log(error);

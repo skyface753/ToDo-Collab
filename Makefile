@@ -14,7 +14,7 @@ integration_tests:
 	CASSANDRA_PASSWORD=${CASSANDRA_PASSWORD} PYTHONPATH=. python3 -m pytest -x --junitxml=report_integration_tests.xml --cov=src --cov-config=.coveragerc --cov-report=xml:coverage.xml tests/integration/
 
 service_tests:
-	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service/collection/
+	API_SERVER=localhost API_PORT=8000 PYTHONPATH=. pytest --pspec --verbose --color=yes --junitxml=report_service_tests.xml tests/service/auth/
 
 
 sonar:

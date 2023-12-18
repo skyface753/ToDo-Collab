@@ -67,7 +67,7 @@ class CreateCollectionModel(BaseModel):
     Create a new collection.
     """
 
-    name: str = Field(...)
+    name: str = Field(..., min_length=1)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
