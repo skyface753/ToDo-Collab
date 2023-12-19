@@ -1,6 +1,7 @@
 version: '3'
 # To use with Traefik, uncomment the commented lines
 # and comment the "server:ports" section
+# and set USE_WSS to true
 services:
   scylla:
     image: scylladb/scylla
@@ -16,6 +17,7 @@ services:
     environment:
       - CASSANDRA_PASSWORD=cassandra
       - CASSANDRA_HOST=scylla
+      - USE_WSS=false # Set to true if you use https with traefik
     ports:
       - 8000:8000
     # networks:

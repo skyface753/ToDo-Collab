@@ -5,6 +5,7 @@ import src.api.v1.endpoints.collection.crud as collection_crud
 import src.logic.collection as collection_logic
 from src.handler.auth import auth_manager
 from src.config.templates import templates
+from src.config.env import USE_WSS
 
 router = APIRouter()
 
@@ -28,11 +29,17 @@ async def get_collection(request: Request, collection_id: str,
         todos_json = []
         for todo in todos:
             todos_json.append(todo.model_dump_json(by_alias=True))
+        websocket_url = str(request.url_for(
+            'ws', collection_id=collection_id).include_query_params(token=token))
+        # Use wss
+        if USE_WSS:
+            websocket_url = websocket_url.replace('ws://', 'wss://')
         return templates.TemplateResponse('collection.html.jinja2',
                                           {'request': request,
                                            'collection': collection,
                                            'user': user,
                                            'token': token,
+                                           'websocket_url': websocket_url,
                                            'todossosos': todos_json})
     else:
         return RedirectResponse(url='/login', status_code=status.HTTP_303_SEE_OTHER)
