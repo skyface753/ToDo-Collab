@@ -28,7 +28,7 @@ ENV \
 ENV PATH="$HOME/.local/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update \
-    && apt-get install -y curl gnupg
+    && apt-get --no-install-recommends install -y curl gnupg
 
 RUN addgroup --gid ${GROUP_ID} ${USER}
 RUN adduser --disabled-password --gecos '' --home "${HOME}" --uid "${USER_ID}" --gid "${GROUP_ID}" "${USER}"

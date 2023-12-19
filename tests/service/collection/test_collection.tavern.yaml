@@ -50,4 +50,6 @@ stages:
   - type: ref
     id: delete_account
   - type: ref
+    id: login_not_member_user # login as user, which is not member of the collection
+  - type: ref
     id: delete_not_member_account
