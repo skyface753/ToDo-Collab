@@ -1,12 +1,8 @@
 const user_name = document.getElementById('user_name');
 const collection_id = document.getElementById('collection_id');
 const token = document.getElementById('token');
-const ws = new WebSocket(
-  'ws://localhost:8000/api/v1/todo/ws/' +
-    collection_id.value +
-    '?token=' +
-    token.value
-);
+const websocket_url = document.getElementById('websocket_url');
+const ws = new WebSocket(websocket_url.value);
 ws.onmessage = function (event) {
   try {
     const todo = JSON.parse(event.data);

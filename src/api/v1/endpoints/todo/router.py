@@ -7,7 +7,7 @@ from src.handler.auth import auth_manager
 router = APIRouter()
 
 
-@router.websocket('/ws/{collection_id}')
+@router.websocket('/ws/{collection_id}', name="ws")
 async def websocket_endpoint(websocket: WebSocket, collection_id: str,
                              token: str = Query(...)):
     user = await auth_manager.get_current_user(token)
