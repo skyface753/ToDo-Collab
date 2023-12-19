@@ -1,8 +1,36 @@
 version: '3'
-
+# To use with Traefik, uncomment the commented lines
+# and comment the "server:ports" section
 services:
   scylla:
     image: scylladb/scylla
-    ports:
-      - '9042:9042'
     command: --smp 1 --authenticator PasswordAuthenticator --broadcast-address 127.0.0.1 --listen-address 0.0.0.0 --broadcast-rpc-address 127.0.0.1
+    # networks:
+    #   - todo
+
+  server:
+    image: skyface753/todo-collab
+    build:
+      context: .
+      dockerfile: infra/build_artifacts/Dockerfile
+    environment:
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_HOST=scylla
+    ports:
+      - 8000:8000
+    # networks:
+    #   - todo
+    #   - proxy
+    # labels:
+    #   - 'traefik.enable=true' #<== Enable traefik
+    #   - 'traefik.http.routers.todo-secured.rule=Host(`todo.skyface.de`)' #<== Set domain
+    #   - 'traefik.http.routers.todo-secured.entrypoints=websecure' #<== Set entry point for HTTPS
+    #   - 'traefik.http.routers.todo-secured.tls.certresolver=mytlschallenge' #<== Set certsresolvers for https
+    #   - 'traefik.http.routers.todo-secured.middlewares=authelia'
+    #   - 'traefik.http.routers.todo-secured.service=todo-service' #<== Set service
+    #   - 'traefik.http.services.todo-service.loadbalancer.server.port=8000' #<== Set port
+# networks:
+#   proxy:
+#     external: true
+#   todo:
+#     driver: bridge

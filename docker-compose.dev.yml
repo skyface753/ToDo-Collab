@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  scylla:
+    image: scylladb/scylla
+    ports:
+      - '9042:9042'
+    command: --smp 1 --authenticator PasswordAuthenticator --broadcast-address 127.0.0.1 --listen-address 0.0.0.0 --broadcast-rpc-address 127.0.0.1
