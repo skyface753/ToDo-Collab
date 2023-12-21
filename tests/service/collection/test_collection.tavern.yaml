@@ -30,6 +30,7 @@ stages:
       json:
         - name: '{collection_name:s}'
           id: '{collection_id:s}'
+          todos: []
   - type: ref
     id: register_not_member_user
   - type: ref

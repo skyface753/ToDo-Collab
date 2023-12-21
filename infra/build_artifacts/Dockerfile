@@ -5,7 +5,7 @@
 ARG PYTHON_VERSION=3.10.0
 
 #FROM base as development
-FROM python:${PYTHON_VERSION}-slim-buster as development
+FROM python:${PYTHON_VERSION}-slim-buster AS development
 
 ENV USER_ID=1000
 ENV GROUP_ID=1000
@@ -28,7 +28,8 @@ ENV \
 ENV PATH="$HOME/.local/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update \
-    && apt-get --no-install-recommends install -y curl gnupg
+    && apt-get --no-install-recommends install -y curl gnupg \
+    && apt-get clean
 
 RUN addgroup --gid ${GROUP_ID} ${USER}
 RUN adduser --disabled-password --gecos '' --home "${HOME}" --uid "${USER_ID}" --gid "${GROUP_ID}" "${USER}"

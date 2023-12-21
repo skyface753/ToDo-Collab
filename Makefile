@@ -24,6 +24,7 @@ sonar:
 		-Dsonar.host.url=http://10.2.0.110:9000 \
 		-Dsonar.token=${SONAR_TOKEN} \
 		-Dsonar.python.coverage.reportPaths=coverage.xml \
+		-Dsonar.exclusions=client_flutter/web/**,client_flutter/android/**, \
 		-Dsonar.coverage.exclusions=tests/**,**/router.py,**/src/presentation/**,**/src/models/**,**/src/handler/**,**/src/config/**,**/src/*.py,tailwind.config.js
 
 poetry:
