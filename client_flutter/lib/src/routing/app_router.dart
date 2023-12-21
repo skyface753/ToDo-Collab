@@ -27,8 +27,6 @@ final _homeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.home.name);
 final _loginNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.login.name);
-final _loadingNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.loading.name);
 
 // other destinations, reachable from a top level destination
 // enum SubRoutes { details }
@@ -46,7 +44,7 @@ GoRouter goRouter(GoRouterRef ref) {
     debugLogDiagnostics: true,
     redirect: (context, state) {
       final isAuth = authRepository.getIsAuthenticated();
-      logger.d('isAuthenticated: ${isAuth}');
+      logger.d('isAuthenticated: $isAuth');
       if (!isAuth) {
         return '/${TopLevelDestinations.login.name}';
       }
@@ -75,23 +73,9 @@ GoRouter goRouter(GoRouterRef ref) {
                 name: TopLevelDestinations.home.name,
                 pageBuilder: (context, state) => NoTransitionPage(
                   key: state.pageKey,
-                  child: HomeScreen(),
+                  child: const HomeScreen(),
                 ),
                 // routes: <RouteBase>[
-                //   // The details screen to display stacked on navigator of the
-                //   // first tab. This will cover screen A but not the application
-                //   // shell (bottom navigation bar).
-                //   GoRoute(
-                //     path: '${SubRoutes.details.name}/:${Parameter.id.name}',
-                //     name: SubRoutes.details.name,
-                //     builder: (BuildContext context, GoRouterState state) {
-                //       // alternatively use https://pub.dev/documentation/go_router/latest/topics/Type-safe%20routes-topic.html
-                //       final id =
-                //           int.parse(state.pathParameters[Parameter.id.name]!);
-                //       final person = _extractPersonFromExtra(state.extra);
-                //       return DetailsScreen(id: id, person: person);
-                //     },
-                //   ),
                 // ],
               ),
             ],

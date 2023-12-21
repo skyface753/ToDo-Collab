@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:client_flutter/src/constants/api.dart';
 import 'package:client_flutter/src/core/data/error_data.dart';
 import 'package:client_flutter/src/utils/dio_provider.dart';
@@ -28,7 +30,6 @@ class User with _$User {
 
 //   UserRepositoryImpl() {
 //     Uri baseUri = Uri(
-//         host: Api.host, port: Api.port, scheme: Api.schema, path: Api.basePath);
 //     _dio = Dio(
 //       BaseOptions(
 //         baseUrl: baseUri.toString(),
@@ -61,7 +62,6 @@ class UserRepository {
   final Dio dio;
 
   static const String _authPath = 'auth/login';
-  static const String _collectionPath = 'api/v1/collection';
 
   String _getUrl({int? id}) {
     final url =
@@ -76,13 +76,16 @@ class UserRepository {
 
   Future<dynamic> login(User request) async {
     try {
-      final response = await dio.post(_getUrl(), data: request.toJson());
+      final response = await dio.post<Map<String, dynamic>>(
+        _getUrl(),
+        data: request.toJson(),
+      );
       logger.d('user_repository.login - response: $response');
-      Map<String, dynamic> user = response.data['user'];
+      final userMap = response.data!['user'] as Map<String, dynamic>;
 
-      return User.fromJson(user);
+      return User.fromJson(userMap);
     } on DioException catch (ex) {
-      return ErrorResponse.fromJson(ex.response?.data);
+      return ErrorResponse.fromJson(ex.response?.data as Map<String, dynamic>);
     }
   }
 

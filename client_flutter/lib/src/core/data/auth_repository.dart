@@ -96,12 +96,10 @@ AuthRepository authRepository(AuthRepositoryRef ref) {
 //   (ref) async {
 //     final prefs = await ref.watch(sharedPrefProvider);
 //     ref.watch(setAuthStateProvider);
-//     dynamic user = json.decode(prefs.getString(authenticatiedUsername) ?? "");
 //     return User.fromJson(user);
 //   },
 // );
 
-// // Todo: Handle logout or and reset
 // final resetStorage = StateProvider<dynamic>(
 //   (ref) async {
 //     final prefs = await ref.watch(sharedPrefProvider);

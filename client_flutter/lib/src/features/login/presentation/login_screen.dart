@@ -19,8 +19,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void initState() {
-    username.text = "test"; //innitail value of text field
-    password.text = "Test123";
+    username.text = 'test'; //innitail value of text field
+    password.text = 'Test123';
     super.initState();
   }
 
@@ -42,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login Page"),
+        title: const Text('Login Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),
@@ -51,7 +51,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             TextField(
               controller: username,
               decoration: const InputDecoration(
-                labelText: "Username",
+                labelText: 'Username',
                 icon: Icon(Icons.people), //icon at head of input
               ),
             ),
@@ -61,7 +61,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               decoration: InputDecoration(
                 icon: const Icon(Icons.lock), //icon at head of input
                 //prefixIcon: Icon(Icons.people), //you can use prefixIcon property too.
-                labelText: "Password",
+                labelText: 'Password',
                 suffixIcon: IconButton(
                   onPressed: _togglePasswordView,
                   icon: Icon(
@@ -91,17 +91,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 (r) => {
                                   ref.invalidate(fetchCollectionsProvider),
                                   context
-                                      .goNamed(TopLevelDestinations.home.name)
+                                      .goNamed(TopLevelDestinations.home.name),
                                 },
                               ),
                             },
                           );
                     },
-                    child: const Text("Login"),
+                    child: const Text('Login'),
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -202,8 +202,10 @@ mixin _$Todo {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String get user_name => throw _privateConstructorUsedError;
-  String get collection_id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_name')
+  String get userName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'collection_id')
+  String get collectionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -219,8 +221,8 @@ abstract class $TodoCopyWith<$Res> {
       {String id,
       String title,
       String description,
-      String user_name,
-      String collection_id});
+      @JsonKey(name: 'user_name') String userName,
+      @JsonKey(name: 'collection_id') String collectionId});
 }
 
 /// @nodoc
@@ -239,8 +241,8 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? id = null,
     Object? title = null,
     Object? description = null,
-    Object? user_name = null,
-    Object? collection_id = null,
+    Object? userName = null,
+    Object? collectionId = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -255,13 +257,13 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      user_name: null == user_name
-          ? _value.user_name
-          : user_name // ignore: cast_nullable_to_non_nullable
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      collection_id: null == collection_id
-          ? _value.collection_id
-          : collection_id // ignore: cast_nullable_to_non_nullable
+      collectionId: null == collectionId
+          ? _value.collectionId
+          : collectionId // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -278,8 +280,8 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       {String id,
       String title,
       String description,
-      String user_name,
-      String collection_id});
+      @JsonKey(name: 'user_name') String userName,
+      @JsonKey(name: 'collection_id') String collectionId});
 }
 
 /// @nodoc
@@ -295,8 +297,8 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = null,
-    Object? user_name = null,
-    Object? collection_id = null,
+    Object? userName = null,
+    Object? collectionId = null,
   }) {
     return _then(_$TodoImpl(
       id: null == id
@@ -311,13 +313,13 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      user_name: null == user_name
-          ? _value.user_name
-          : user_name // ignore: cast_nullable_to_non_nullable
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      collection_id: null == collection_id
-          ? _value.collection_id
-          : collection_id // ignore: cast_nullable_to_non_nullable
+      collectionId: null == collectionId
+          ? _value.collectionId
+          : collectionId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -330,8 +332,8 @@ class _$TodoImpl implements _Todo {
       {required this.id,
       required this.title,
       required this.description,
-      required this.user_name,
-      required this.collection_id});
+      @JsonKey(name: 'user_name') required this.userName,
+      @JsonKey(name: 'collection_id') required this.collectionId});
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
@@ -343,13 +345,15 @@ class _$TodoImpl implements _Todo {
   @override
   final String description;
   @override
-  final String user_name;
+  @JsonKey(name: 'user_name')
+  final String userName;
   @override
-  final String collection_id;
+  @JsonKey(name: 'collection_id')
+  final String collectionId;
 
   @override
   String toString() {
-    return 'Todo(id: $id, title: $title, description: $description, user_name: $user_name, collection_id: $collection_id)';
+    return 'Todo(id: $id, title: $title, description: $description, userName: $userName, collectionId: $collectionId)';
   }
 
   @override
@@ -361,16 +365,16 @@ class _$TodoImpl implements _Todo {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.user_name, user_name) ||
-                other.user_name == user_name) &&
-            (identical(other.collection_id, collection_id) ||
-                other.collection_id == collection_id));
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.collectionId, collectionId) ||
+                other.collectionId == collectionId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, description, user_name, collection_id);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, description, userName, collectionId);
 
   @JsonKey(ignore: true)
   @override
@@ -388,11 +392,12 @@ class _$TodoImpl implements _Todo {
 
 abstract class _Todo implements Todo {
   const factory _Todo(
-      {required final String id,
-      required final String title,
-      required final String description,
-      required final String user_name,
-      required final String collection_id}) = _$TodoImpl;
+          {required final String id,
+          required final String title,
+          required final String description,
+          @JsonKey(name: 'user_name') required final String userName,
+          @JsonKey(name: 'collection_id') required final String collectionId}) =
+      _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
@@ -403,9 +408,11 @@ abstract class _Todo implements Todo {
   @override
   String get description;
   @override
-  String get user_name;
+  @JsonKey(name: 'user_name')
+  String get userName;
   @override
-  String get collection_id;
+  @JsonKey(name: 'collection_id')
+  String get collectionId;
   @override
   @JsonKey(ignore: true)
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>

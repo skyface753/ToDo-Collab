@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isAuth = ref.watch(authRepositoryProvider).getIsAuthenticated();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
+        title: const Text('Home Screen'),
       ),
       body: isAuth
           ?
@@ -33,21 +35,23 @@ class HomeScreen extends ConsumerWidget {
                         Text(item.name),
                         Text(item.id),
                         ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: item.todos.length,
-                            itemBuilder: (context, index) {
-                              final todo = item.todos[index];
-                              return ListTile(
-                                title: Text(todo.title),
-                                subtitle: Text(todo.description),
-                              );
-                            })
+                          shrinkWrap: true,
+                          itemCount: item.todos.length,
+                          itemBuilder: (context, index) {
+                            final todo = item.todos[index];
+                            return ListTile(
+                              title: Text(todo.title),
+                              subtitle: Text(todo.description),
+                            );
+                          },
+                        ),
                       ],
                     );
                   },
                 );
-              })
-          : Text("Not Authenticated"),
+              },
+            )
+          : const Text('Not Authenticated'),
     );
   }
 }

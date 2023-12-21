@@ -20,8 +20,8 @@ ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ErrorResponse {
-  dynamic get data => throw _privateConstructorUsedError;
   Error get error => throw _privateConstructorUsedError;
+  dynamic get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $ErrorResponseCopyWith<$Res> {
           ErrorResponse value, $Res Function(ErrorResponse) then) =
       _$ErrorResponseCopyWithImpl<$Res, ErrorResponse>;
   @useResult
-  $Res call({dynamic data, Error error});
+  $Res call({Error error, dynamic data});
 
   $ErrorCopyWith<$Res> get error;
 }
@@ -53,18 +53,18 @@ class _$ErrorResponseCopyWithImpl<$Res, $Val extends ErrorResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = freezed,
     Object? error = null,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
       error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as Error,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 
@@ -85,7 +85,7 @@ abstract class _$$ErrorResponseImplCopyWith<$Res>
       __$$ErrorResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({dynamic data, Error error});
+  $Res call({Error error, dynamic data});
 
   @override
   $ErrorCopyWith<$Res> get error;
@@ -102,18 +102,18 @@ class __$$ErrorResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = freezed,
     Object? error = null,
+    Object? data = freezed,
   }) {
     return _then(_$ErrorResponseImpl(
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
       error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as Error,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -121,19 +121,19 @@ class __$$ErrorResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ErrorResponseImpl implements _ErrorResponse {
-  const _$ErrorResponseImpl({this.data, required this.error});
+  const _$ErrorResponseImpl({required this.error, this.data});
 
   factory _$ErrorResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$ErrorResponseImplFromJson(json);
 
   @override
-  final dynamic data;
-  @override
   final Error error;
+  @override
+  final dynamic data;
 
   @override
   String toString() {
-    return 'ErrorResponse(data: $data, error: $error)';
+    return 'ErrorResponse(error: $error, data: $data)';
   }
 
   @override
@@ -141,14 +141,14 @@ class _$ErrorResponseImpl implements _ErrorResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorResponseImpl &&
-            const DeepCollectionEquality().equals(other.data, data) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality().equals(other.data, data));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(data), error);
+      runtimeType, error, const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
@@ -166,15 +166,15 @@ class _$ErrorResponseImpl implements _ErrorResponse {
 
 abstract class _ErrorResponse implements ErrorResponse {
   const factory _ErrorResponse(
-      {final dynamic data, required final Error error}) = _$ErrorResponseImpl;
+      {required final Error error, final dynamic data}) = _$ErrorResponseImpl;
 
   factory _ErrorResponse.fromJson(Map<String, dynamic> json) =
       _$ErrorResponseImpl.fromJson;
 
   @override
-  dynamic get data;
-  @override
   Error get error;
+  @override
+  dynamic get data;
   @override
   @JsonKey(ignore: true)
   _$$ErrorResponseImplCopyWith<_$ErrorResponseImpl> get copyWith =>

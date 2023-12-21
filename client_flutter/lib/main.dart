@@ -1,15 +1,16 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:client_flutter/src/core/data/auth_repository.dart';
+import 'package:client_flutter/src/routing/app_router.dart';
+import 'package:client_flutter/src/utils/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'src/routing/app_router.dart';
-import 'src/utils/localization.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
-  final WidgetsBinding widgetsBinding =
-      WidgetsFlutterBinding.ensureInitialized();
+  final _ = WidgetsFlutterBinding.ensureInitialized();
 
   final sharedPreferences = await SharedPreferences.getInstance();
 

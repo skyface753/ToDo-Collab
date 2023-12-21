@@ -20,8 +20,8 @@ abstract class Todo with _$Todo {
     required String id,
     required String title,
     required String description,
-    required String user_name,
-    required String collection_id,
+    @JsonKey(name: 'user_name') required String userName,
+    @JsonKey(name: 'collection_id') required String collectionId,
   }) = _Todo;
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);

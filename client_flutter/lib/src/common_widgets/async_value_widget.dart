@@ -1,12 +1,11 @@
-import 'package:client_flutter/src/exceptions/api_exception.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore_for_file: public_member_api_docs
 
+import 'package:client_flutter/src/exceptions/api_exception.dart';
+import 'package:client_flutter/src/utils/localization.dart';
+import 'package:client_flutter/src/utils/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/localization.dart';
-import '../utils/logger.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //credits to  Code with Andrea https://github.com/bizz84/starter_architecture_flutter_firebase/blob/master/lib/src/common_widgets/async_value_widget.dart
 class AsyncValueWidget<T> extends StatelessWidget {

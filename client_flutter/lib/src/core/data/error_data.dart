@@ -5,8 +5,8 @@ part 'error_data.g.dart';
 @freezed
 class ErrorResponse with _$ErrorResponse {
   const factory ErrorResponse({
-    dynamic data,
     required Error error,
+    dynamic data,
   }) = _ErrorResponse;
 
   factory ErrorResponse.fromJson(Map<String, dynamic> json) =>

@@ -5,22 +5,23 @@ import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class UserController extends StateNotifier<AsyncValue<dynamic>> {
-  Ref ref;
-
   UserController({
     required this.ref,
   }) : super(const AsyncData(null));
+  Ref ref;
 
-  Future<Either<String, bool>> login(
-      {required String username, required String password}) async {
+  Future<Either<String, bool>> login({
+    required String username,
+    required String password,
+  }) async {
     state = const AsyncLoading();
 
-    User userReq = User(name: username, password: password);
+    final User userReq = User(name: username, password: password);
     final response = await ref.read(userRepositoryProvider).login(userReq);
     if (response is ErrorResponse) {
       return Left(response.error.message);
     } else {
-      ref.read(authRepositoryProvider).setIsAuthenticated(username);
+      await ref.read(authRepositoryProvider).setIsAuthenticated(username);
       // ref.read(setAuthStateProvider.notifier).state = response;
       // ref.read(setIsAuthenticatedProvider(true));
       // ref.read(setAuthenticatedUserProvider(response));

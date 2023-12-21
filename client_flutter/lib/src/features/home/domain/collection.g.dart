@@ -26,8 +26,8 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      user_name: json['user_name'] as String,
-      collection_id: json['collection_id'] as String,
+      userName: json['user_name'] as String,
+      collectionId: json['collection_id'] as String,
     );
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
@@ -35,6 +35,6 @@ Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
-      'user_name': instance.user_name,
-      'collection_id': instance.collection_id,
+      'user_name': instance.userName,
+      'collection_id': instance.collectionId,
     };
