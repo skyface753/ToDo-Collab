@@ -20,9 +20,10 @@ class UserController extends StateNotifier<AsyncValue<dynamic>> {
     if (response is ErrorResponse) {
       return Left(response.error.message);
     } else {
-      ref.read(setAuthStateProvider.notifier).state = response;
-      ref.read(setIsAuthenticatedProvider(true));
-      ref.read(setAuthenticatedUserProvider(response));
+      ref.read(authRepositoryProvider).setIsAuthenticated(username);
+      // ref.read(setAuthStateProvider.notifier).state = response;
+      // ref.read(setIsAuthenticatedProvider(true));
+      // ref.read(setAuthenticatedUserProvider(response));
       return const Right(true);
     }
   }

@@ -20,7 +20,7 @@ class CreateTodoModel(BaseModel):
             'example': {
                 'title': 'Do the dishes',
                 'description': 'Its your turn to do the dishes.',
-                'user_id': 'User ID',
+                'user_name': 'User Name',
                 'collection_id': 'Collection ID',  # NOSONAR
             },
         },
@@ -86,6 +86,22 @@ class CollectionModel(CreateCollectionModel):
     """
 
     id: uuid.UUID = Field(...)
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+    )
+
+    @field_serializer('id')
+    def serialize_id(self, id: uuid.UUID) -> str:
+        return str(id)
+
+
+class CollectionModelWithTodos(CollectionModel):
+    """
+    Container for a collection record.
+    """
+
+    todos: list[TodoModel] = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,

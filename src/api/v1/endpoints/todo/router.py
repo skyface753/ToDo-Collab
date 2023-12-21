@@ -38,6 +38,6 @@ async def websocket_endpoint(websocket: WebSocket, collection_id: str,
 async def create_todo(todo: CreateTodoModel, user=Depends(auth_manager)):
     todo.user_name = user.name
     created_todo = todo_crud.create(todo)
-    created_todo = created_todo.model_dump_json(by_alias=True)
+    created_todo = created_todo.model_dump(by_alias=True)
     await manager.broadcast(created_todo, todo.collection_id)
     return created_todo

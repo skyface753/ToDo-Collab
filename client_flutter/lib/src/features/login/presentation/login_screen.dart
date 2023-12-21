@@ -1,3 +1,4 @@
+import 'package:client_flutter/src/features/home/data/collection_repository.dart';
 import 'package:client_flutter/src/features/login/presentation/user_controller.dart';
 import 'package:client_flutter/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   showSnackbar(context, l),
                                 },
                                 (r) => {
+                                  ref.invalidate(fetchCollectionsProvider),
                                   context
                                       .goNamed(TopLevelDestinations.home.name)
                                 },

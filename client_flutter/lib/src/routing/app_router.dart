@@ -39,22 +39,24 @@ final _loadingNavigatorKey =
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final authRepository = ref.watch(getIsAuthenticatedProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/${TopLevelDestinations.home.name}',
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (context, state) {
-      logger.d('isAuthenticated: ${authRepository.value}');
-      if (authRepository.value == null || authRepository.isLoading) {
-        return '/${TopLevelDestinations.loading.name}';
-      }
-      if (authRepository.value!) {
-        // return '/${TopLevelDestinations.home.name}';
-        return null;
-      } else {
+      final isAuth = authRepository.getIsAuthenticated();
+      logger.d('isAuthenticated: ${isAuth}');
+      if (!isAuth) {
         return '/${TopLevelDestinations.login.name}';
       }
+      return null;
+      // if (authRepository.value!) {
+      //   // return '/${TopLevelDestinations.home.name}';
+      //   return null;
+      // } else {
+      //   return '/${TopLevelDestinations.login.name}';
+      // }
     },
     routes: [
       // Stateful navigation based on:

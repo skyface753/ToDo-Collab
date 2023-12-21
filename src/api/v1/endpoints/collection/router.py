@@ -3,14 +3,14 @@ from src.handler.auth import auth_manager
 import src.logic.collection as collection_logic
 import src.api.v1.endpoints.collection.crud as collection_crud
 import src.api.v1.endpoints.member.crud as member_crud
-from src.models.models import CollectionModel, CreateCollectionModel
+from src.models.models import CollectionModel, CreateCollectionModel, CollectionModelWithTodos
 from typing import List
 from bson import json_util
 
 router = APIRouter()
 
 
-@router.get('', response_model=List[CollectionModel])
+@router.get('', response_model=List[CollectionModelWithTodos])
 def get_collections(user=Depends(auth_manager)):
     collections = collection_logic.find_collections_for_user(user.name)
     return collections
