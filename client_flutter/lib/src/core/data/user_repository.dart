@@ -34,9 +34,12 @@ class UserRepository {
         data: request.toJson(),
       );
       logger.d('user_repository.login - response: $response');
-      final userMap = response.data!['user'] as Map<String, dynamic>;
-
-      return User.fromJson(userMap);
+      if (response.statusCode == 200) {
+        final userMap = response.data!['user'] as Map<String, dynamic>;
+        return User.fromJson(userMap);
+      } else {
+        return ErrorResponse.fromJson(response.data as Map<String, dynamic>);
+      }
     } on DioException catch (ex) {
       return ErrorResponse.fromJson(ex.response?.data as Map<String, dynamic>);
     }

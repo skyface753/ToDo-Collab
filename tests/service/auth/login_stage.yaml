@@ -13,7 +13,7 @@ stages:
   - id: register_user
     name: Register user
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/register
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/user/register
       json:
         name: '{username:s}'
         password: '{password:s}'
@@ -26,7 +26,7 @@ stages:
   - id: register_not_member_user
     name: Register a user, which is not a member of the collection
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/register
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/user/register
       json:
         name: '{username_2:s}'
         password: '{password_2:s}'
@@ -39,7 +39,7 @@ stages:
   - id: login_user
     name: Login user
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/login
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/user/login
       json:
         name: '{username:s}'
         password: '{password:s}'
@@ -61,7 +61,7 @@ stages:
   - id: login_not_member_user
     name: Login user, which is not a member of the collection
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/login
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/user/login
       json:
         name: '{username_2:s}'
         password: '{password_2:s}'
@@ -83,7 +83,7 @@ stages:
   - id: delete_account
     name: Delete account
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/delete
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/user/delete
       method: DELETE
       json:
         name: '{username:s}'
@@ -94,7 +94,7 @@ stages:
   - id: delete_not_member_account
     name: Delete account
     request:
-      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/auth/delete
+      url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/user/delete
       method: DELETE
       json:
         name: '{username_2:s}'

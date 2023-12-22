@@ -1,4 +1,3 @@
-from bson import json_util
 from fastapi import FastAPI, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -7,6 +6,7 @@ from src.presentation.endpoints.collection.router import router as collection_ro
 from src.api.v1.endpoints.member.router import router as member_router_api
 from src.api.v1.endpoints.collection.router import router as collection_router_api
 from src.presentation.endpoints.auth.router import router as auth_router
+from src.api.v1.endpoints.user.router import router as user_router_api
 from uvicorn.config import LOGGING_CONFIG
 from fastapi import Depends
 import uvicorn
@@ -22,15 +22,18 @@ app = FastAPI()
 app.mount('/static', StaticFiles(directory='src/presentation/static'), name='static')
 
 
-@app.get('/protected')
-def protected_route(user=Depends(auth_manager)):
-    return {'user': json_util.dumps(user)}
+# @app.get('/protected')
+# def protected_route(user=Depends(auth_manager)):
+#     return {'user': json_util.dumps(user)}
 
 
 @app.get('/')
-def get(request: Request, user=Depends(auth_manager)):
+def get(request: Request, user=Depends(auth_manager.optional)):
     """ Redirect to the todo page """
-    return RedirectResponse(url=request.url_for('collections'),
+    if user:
+        return RedirectResponse(url=request.url_for('collections'),
+                                status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(url=request.url_for('login'),
                             status_code=status.HTTP_303_SEE_OTHER)
 
 
@@ -45,6 +48,8 @@ app.include_router(member_router_api, prefix='/api/v1/member',
                    tags=['member/api/v1'])
 app.include_router(collection_router_api, prefix='/api/v1/collection',
                    tags=['collection/api/v1'])
+app.include_router(user_router_api, prefix='/api/v1/user',
+                   tags=['user/api/v1'])
 
 
 @app.exception_handler(NotAuthenticatedException)
@@ -52,7 +57,14 @@ def auth_exception_handler(request: Request, exc: NotAuthenticatedException):
     """
     Redirect the user to the login page if not logged in
     """
-    return RedirectResponse(url=request.url_for('login'))
+    # Check if it was an API request
+    if request.url.path.startswith('/api'):
+        return JSONResponse(content={'message': 'Not authenticated'}, status_code=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return RedirectResponse(url=request.url_for('login'))
+    # return RedirectResponse(url=request.url_for('login'))
+    # print("HI")
+    # return Response(status_code=status.HTTP_401_UNAUTHORIZED)
 
 
 @app.exception_handler(RequestValidationError)

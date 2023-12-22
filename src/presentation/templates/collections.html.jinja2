@@ -2,7 +2,7 @@
 %} {% block styles %}
 <link rel="stylesheet" href="/static/css/collections.css" />
 {% endblock %} {% block scripts %}
-<script src="/static/js/collections.js"></script>
+<script src="/static/js/collections.js" defer></script>
 {% endblock %} 
 
 {% set active_page = 'home' %}
@@ -11,7 +11,7 @@
 <section id="overlay" onclick="hideCreateCollectionOverlay()">
   <form
     id="create-collection-form"
-    class="overlay-box"
+    class="overlay-box gap-2"
     onclick="event.stopPropagation()"
   >
     {# onsubmit="createCollection(event)" #}
@@ -21,7 +21,11 @@
       placeholder="Collection Name"
       id="create-collection-name"
     />
-    <button  class="btn-primary" id="create-collection-submit">Create</button>
+    <p id="create-collection-error" class="text-error text-base"></p>
+    <div class="flex justify-between gap-4">
+    <button  class="btn-secondary text-base flex-grow-1" onclick="hideCreateCollectionOverlay()">Cancel</button>
+    <button  class="btn-primary text-base flex-1" id="create-collection-button">Create</button>
+    </div>
   </form>
 </section>
 <h1>Hello {{ user.name }}</h1>

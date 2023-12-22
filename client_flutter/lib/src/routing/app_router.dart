@@ -80,25 +80,25 @@ GoRouter goRouter(GoRouterRef ref) {
               ),
             ],
           ),
-          StatefulShellBranch(
-            navigatorKey: _loginNavigatorKey,
-            routes: [
-              GoRoute(
-                path: '/${TopLevelDestinations.login.name}',
-                name: TopLevelDestinations.login.name,
-                pageBuilder: (context, state) => NoTransitionPage(
-                  key: state.pageKey,
-                  child: const LoginScreen(),
-                ),
-              ),
-            ],
-          ),
+          // StatefulShellBranch(
+          //   navigatorKey: _loginNavigatorKey,
+          //   routes: [
+          //     GoRoute(
+          //       path: '/${TopLevelDestinations.login.name}',
+          //       name: TopLevelDestinations.login.name,
+          //       pageBuilder: (context, state) => NoTransitionPage(
+          //         key: state.pageKey,
+          //         child: const LoginScreen(),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
       // Loading screen
       GoRoute(
-        path: '/${TopLevelDestinations.loading.name}',
-        name: TopLevelDestinations.loading.name,
+        path: '/${TopLevelDestinations.login.name}',
+        name: TopLevelDestinations.login.name,
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
           child: const LoginScreen(),

@@ -5,7 +5,6 @@ import src.api.v1.endpoints.collection.crud as collection_crud
 import src.api.v1.endpoints.member.crud as member_crud
 from src.models.models import CollectionModel, CreateCollectionModel, CollectionModelWithTodos
 from typing import List
-from bson import json_util
 
 router = APIRouter()
 
@@ -19,9 +18,14 @@ def get_collections(user=Depends(auth_manager)):
 @router.post('', status_code=status.HTTP_201_CREATED,
              response_model=CollectionModel, name='create_collection')
 def create_collection(collection: CreateCollectionModel, user=Depends(auth_manager)):
+    # Trim the name
+    collection.name = collection.name.strip()
+    if collection.name == '' or collection.name is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail='Name cannot be empty')
     collection = collection_logic.create_collection_for_user(collection, user)
-    data = collection.model_dump(by_alias=True)
-    return Response(content=json_util.dumps(data), media_type='application/json',
+    data = collection.model_dump_json(by_alias=True)
+    return Response(content=(data), media_type='application/json',
                     status_code=status.HTTP_201_CREATED)
 
 

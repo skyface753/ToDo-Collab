@@ -12,35 +12,39 @@ function init() {
     }
   });
 
-  document
-    .getElementById('create-collection-form')
-    .addEventListener('submit', function (e) {
-      e.preventDefault();
-      let name = document.getElementById('create-collection-name').value;
+  // document
+  //   .getElementById('create-collection-form')
+  //   .addEventListener('submit', function (e) {
+  //     e.preventDefault();
+  //     let name = document.getElementById('create-collection-name').value;
 
-      fetch('/api/v1/collection', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-        }),
-      })
-        .then((response) => {
-          if (response.status === 201) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong');
-          }
-        })
-        .then((data) => {
-          if (data.id) window.location.href = '/collection/' + data.id;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+  //     fetch('/api/v1/collection', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         name: name,
+  //       }),
+  //     })
+  //       .then((response) => {
+  //         if (response.status === 201) {
+  //           return response.json();
+  //         } else {
+  //           throw new Error('Something went wrong');
+  //         }
+  //       })
+  //       .then((data) => {
+  //         if (data.id) window.location.href = '/collection/' + data.id;
+  //       })
+  //       .catch((error) => {
+  //         var errorMsgField = document.getElementById(
+  //           'create-collection-error'
+  //         );
+  //         errorMsgField.innerText = error;
+  //         console.log(error);
+  //       });
+  //   });
 }
 
 function showCreateCollectionOverlay() {
@@ -50,3 +54,36 @@ function showCreateCollectionOverlay() {
 function hideCreateCollectionOverlay() {
   document.getElementById('overlay').style.display = 'none';
 }
+
+$('#create-collection-form').submit(function (event) {
+  event.preventDefault();
+  const name = $('#create-collection-name').val();
+  const data = {
+    name: name,
+  };
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/collection',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    success: function (data) {
+      window.location.href = '/collection/' + data.id;
+    },
+    error: function (xhr, textStatus, error) {
+      errorMsg = 'Something went wrong';
+      console.log(xhr.responseText);
+      console.log(error);
+      if (error === 'Unprocessable Entity') {
+        errorMsg = 'Collection name must be at least 1 character long';
+      } else {
+        error = JSON.parse(xhr.responseText);
+        if (error.detail) {
+          errorMsg = error.detail;
+        }
+      }
+
+      $('#create-collection-error').text(errorMsg);
+    },
+  });
+});

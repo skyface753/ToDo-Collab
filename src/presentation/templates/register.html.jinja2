@@ -75,13 +75,14 @@
             >
           </div>
 
-          {% if error %}
-          <div class="mb-6 flex items-center justify-around">
+           <div class="mb-6 items-center justify-around hidden"
+            id="error-msg-container"
+          >
             <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
-              <p class="text-error"> {{ error }} </p>
+              <p class="text-error" id="error-msg"
+              > </p>
             </div>
           </div>
-          {% endif %}
 
           <!-- Submit button -->
           <button class="btn-primary w-full"

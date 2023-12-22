@@ -9,15 +9,15 @@ $('#login-btn').click(function (event) {
   };
   $.ajax({
     type: 'POST',
-    url: '/auth/login?remember=' + rememberCheck,
+    url: '/api/v1/user/login?remember=' + rememberCheck,
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success: function (data) {
       window.location.href = '/';
     },
-    failure: function (errMsg) {
-      alert(errMsg);
+    error: function (xhr, status, error) {
+      setErrorMsg(xhr.responseText);
     },
   });
 });
@@ -35,15 +35,29 @@ $('#register-btn').click(function (event) {
   };
   $.ajax({
     type: 'POST',
-    url: '/auth/register?remember=' + rememberCheck,
+    url: '/api/v1/user/register?remember=' + rememberCheck,
     data: JSON.stringify(data),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success: function (data) {
       window.location.href = '/';
     },
-    failure: function (errMsg) {
-      alert(errMsg);
+    error: function (xhr, status, error) {
+      setErrorMsg(xhr.responseText);
     },
   });
 });
+
+// Set error message
+function setErrorMsg(error) {
+  console.log(error);
+  try {
+    error = JSON.parse(error);
+    error = error.detail;
+  } catch {
+    error = 'Something went wrong';
+  }
+  $('#error-msg').text(error);
+  $('#error-msg-container').addClass('flex');
+  $('#error-msg-container').removeClass('hidden');
+}

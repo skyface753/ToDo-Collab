@@ -21,7 +21,7 @@ class CreateTodoModel(BaseModel):
                 'title': 'Do the dishes',
                 'description': 'Its your turn to do the dishes.',
                 'user_name': 'User Name',
-                'collection_id': 'Collection ID',  # NOSONAR
+                'collection_id': uuid.uuid4(),
             },
         },
     )
@@ -124,8 +124,8 @@ class MembersModel(BaseModel):
         arbitrary_types_allowed=True,
         json_schema_extra={
             'example': {
-                'user_id': 'User ID',
-                'collection_id': 'Collection ID',  # NOSONAR
+                'user_name': 'User Name',
+                'collection_id': uuid.uuid4(),
             },
         },
     )
