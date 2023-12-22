@@ -87,3 +87,8 @@ $('#create-collection-form').submit(function (event) {
     },
   });
 });
+
+$('#create-collection-cancle').click(function (event) {
+  event.preventDefault();
+  hideCreateCollectionOverlay();
+});
