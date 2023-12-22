@@ -22,7 +22,7 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
 mixin _$Collection {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  List<Todo> get todos => throw _privateConstructorUsedError;
+  List<Todo>? get todos => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $CollectionCopyWith<$Res> {
           Collection value, $Res Function(Collection) then) =
       _$CollectionCopyWithImpl<$Res, Collection>;
   @useResult
-  $Res call({String id, String name, List<Todo> todos});
+  $Res call({String id, String name, List<Todo>? todos});
 }
 
 /// @nodoc
@@ -54,7 +54,7 @@ class _$CollectionCopyWithImpl<$Res, $Val extends Collection>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? todos = null,
+    Object? todos = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -65,10 +65,10 @@ class _$CollectionCopyWithImpl<$Res, $Val extends Collection>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      todos: null == todos
+      todos: freezed == todos
           ? _value.todos
           : todos // ignore: cast_nullable_to_non_nullable
-              as List<Todo>,
+              as List<Todo>?,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$CollectionImplCopyWith<$Res>
       __$$CollectionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, List<Todo> todos});
+  $Res call({String id, String name, List<Todo>? todos});
 }
 
 /// @nodoc
@@ -97,7 +97,7 @@ class __$$CollectionImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? todos = null,
+    Object? todos = freezed,
   }) {
     return _then(_$CollectionImpl(
       id: null == id
@@ -108,10 +108,10 @@ class __$$CollectionImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      todos: null == todos
+      todos: freezed == todos
           ? _value._todos
           : todos // ignore: cast_nullable_to_non_nullable
-              as List<Todo>,
+              as List<Todo>?,
     ));
   }
 }
@@ -120,7 +120,7 @@ class __$$CollectionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CollectionImpl implements _Collection {
   const _$CollectionImpl(
-      {required this.id, required this.name, required final List<Todo> todos})
+      {required this.id, required this.name, final List<Todo>? todos})
       : _todos = todos;
 
   factory _$CollectionImpl.fromJson(Map<String, dynamic> json) =>
@@ -130,12 +130,14 @@ class _$CollectionImpl implements _Collection {
   final String id;
   @override
   final String name;
-  final List<Todo> _todos;
+  final List<Todo>? _todos;
   @override
-  List<Todo> get todos {
+  List<Todo>? get todos {
+    final value = _todos;
+    if (value == null) return null;
     if (_todos is EqualUnmodifiableListView) return _todos;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_todos);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -176,7 +178,7 @@ abstract class _Collection implements Collection {
   const factory _Collection(
       {required final String id,
       required final String name,
-      required final List<Todo> todos}) = _$CollectionImpl;
+      final List<Todo>? todos}) = _$CollectionImpl;
 
   factory _Collection.fromJson(Map<String, dynamic> json) =
       _$CollectionImpl.fromJson;
@@ -186,7 +188,7 @@ abstract class _Collection implements Collection {
   @override
   String get name;
   @override
-  List<Todo> get todos;
+  List<Todo>? get todos;
   @override
   @JsonKey(ignore: true)
   _$$CollectionImplCopyWith<_$CollectionImpl> get copyWith =>

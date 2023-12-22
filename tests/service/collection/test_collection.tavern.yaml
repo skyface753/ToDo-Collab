@@ -21,6 +21,7 @@ stages:
       json:
         name: '{collection_name:s}'
         id: '{collection_id:s}'
+        todos: []
   - name: Get my collections
     request:
       url: http://{tavern.env_vars.API_SERVER}:{tavern.env_vars.API_PORT}/api/v1/collection
@@ -30,7 +31,6 @@ stages:
       json:
         - name: '{collection_name:s}'
           id: '{collection_id:s}'
-          todos: []
   - type: ref
     id: register_not_member_user
   - type: ref

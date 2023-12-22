@@ -1,26 +1,17 @@
 import src.api.v1.endpoints.member.crud as member_crud
 import src.api.v1.endpoints.collection.crud as collection_crud
-import src.api.v1.endpoints.todo.crud as todo_crud
 from src.models.models import CollectionModel, MembersModel, \
-    UserModel, CreateCollectionModel, CollectionModelWithTodos
+    UserModel, CreateCollectionModel
 from typing import List
 
 
-def find_collections_for_user(user_name: str) -> List[CollectionModelWithTodos]:
+def find_collections_for_user(user_name: str) -> List[CollectionModel]:
     members = member_crud.find_by_user_name(user_name)
     collections = []
     for member in members:
         collection = collection_crud.find_by_id(member.collection_id)
         if collection is not None:
-            # collections.append(collection)
-            # Get the todos
-            todos = todo_crud.find_by_collection_id(collection.id)
-            collection_with_todos = CollectionModelWithTodos(
-                id=collection.id,
-                name=collection.name,
-                todos=todos,
-            )
-            collections.append(collection_with_todos)
+            collections.append(collection)
     return collections
 
 

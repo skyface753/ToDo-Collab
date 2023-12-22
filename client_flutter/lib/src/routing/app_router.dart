@@ -1,4 +1,5 @@
 import 'package:client_flutter/src/core/data/auth_repository.dart';
+import 'package:client_flutter/src/features/home/presentation/collection_screen.dart';
 import 'package:client_flutter/src/features/home/presentation/home_screen.dart';
 import 'package:client_flutter/src/features/login/presentation/login_screen.dart';
 import 'package:client_flutter/src/utils/logger.dart';
@@ -30,8 +31,9 @@ final _loginNavigatorKey =
 
 // other destinations, reachable from a top level destination
 // enum SubRoutes { details }
+enum CollectionSubRoutes { collection }
 
-// enum Parameter { id }
+enum Parameter { id }
 
 //https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
 
@@ -75,8 +77,19 @@ GoRouter goRouter(GoRouterRef ref) {
                   key: state.pageKey,
                   child: const HomeScreen(),
                 ),
-                // routes: <RouteBase>[
-                // ],
+                routes: [
+                  // sub route details
+                  GoRoute(
+                    path:
+                        '${CollectionSubRoutes.collection.name}/:${Parameter.id.name}',
+                    name: CollectionSubRoutes.collection.name,
+                    builder: (BuildContext context, GoRouterState state) {
+                      // alternatively use https://pub.dev/documentation/go_router/latest/topics/Type-safe%20routes-topic.html
+                      final id = state.pathParameters[Parameter.id.name]!;
+                      return CollectionScreen(collectionId: id);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

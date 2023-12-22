@@ -7,7 +7,7 @@ abstract class Collection with _$Collection {
   const factory Collection({
     required String id,
     required String name,
-    required List<Todo> todos,
+    List<Todo>? todos,
   }) = _Collection;
 
   factory Collection.fromJson(Map<String, dynamic> json) =>

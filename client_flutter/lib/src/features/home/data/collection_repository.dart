@@ -17,7 +17,7 @@ class CollectionRepository {
   static const String apiPrefix = 'api/v1';
   static const String _collectionPath = '$apiPrefix/collection';
 
-  String _getCollectionUrl({int? id}) {
+  String _getCollectionUrl({String? id}) {
     final url = Uri(
       scheme: Api.schema,
       host: Api.host,
@@ -25,7 +25,7 @@ class CollectionRepository {
       port: Api.port,
     ).toString();
     if (id != null) {
-      return '$url$id';
+      return '$url/$id';
     } else {
       return url;
     }
@@ -57,6 +57,27 @@ class CollectionRepository {
       throw ApiException(-1, 'getCollections $e');
     }
   }
+
+  Future<Collection> getCollection(String collectionId) async {
+    logger.d('collection_repository.getCollection');
+    try {
+      final response = await dio.get<Map<String, dynamic>>(
+        _getCollectionUrl(id: collectionId),
+      );
+      logger.d('response: $response');
+      if (response.statusCode == 200 && response.data != null) {
+        return Collection.fromJson(response.data!);
+      } else {
+        throw ApiException(
+          response.statusCode ?? -1,
+          'getCollection ${response.statusCode}, data=${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.e('collection_repository.getCollection: $e');
+      throw ApiException(-1, 'getCollection $e');
+    }
+  }
 }
 
 @riverpod
@@ -72,4 +93,14 @@ Future<List<Collection>> fetchCollections(
   logger.d('collection_repository.fetchCollections');
   final repo = ref.read(collectionRepositoryProvider);
   return repo.getCollections();
+}
+
+@riverpod
+Future<Collection> fetchCollection(
+  FetchCollectionRef ref,
+  String collectionId,
+) async {
+  logger.d('collection_repository.fetchCollection');
+  final repo = ref.read(collectionRepositoryProvider);
+  return repo.getCollection(collectionId);
 }

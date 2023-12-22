@@ -10,8 +10,8 @@ _$CollectionImpl _$$CollectionImplFromJson(Map<String, dynamic> json) =>
     _$CollectionImpl(
       id: json['id'] as String,
       name: json['name'] as String,
-      todos: (json['todos'] as List<dynamic>)
-          .map((e) => Todo.fromJson(e as Map<String, dynamic>))
+      todos: (json['todos'] as List<dynamic>?)
+          ?.map((e) => Todo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
