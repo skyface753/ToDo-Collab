@@ -14,7 +14,7 @@ class UserRepository {
   UserRepository({required this.dio});
   final Dio dio;
 
-  static const String _authPath = 'auth/login';
+  static const String _authPath = 'api/v1/user/login';
 
   String _getUrl({int? id}) {
     final url =
