@@ -1,6 +1,7 @@
 import 'package:client_flutter/src/core/data/auth_repository.dart';
 import 'package:client_flutter/src/core/data/error_data.dart';
 import 'package:client_flutter/src/core/data/user_repository.dart';
+import 'package:client_flutter/src/core/domain/user.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,9 +23,6 @@ class UserController extends StateNotifier<AsyncValue<dynamic>> {
       return Left(response.error.message);
     } else {
       await ref.read(authRepositoryProvider).setIsAuthenticated(username);
-      // ref.read(setAuthStateProvider.notifier).state = response;
-      // ref.read(setIsAuthenticatedProvider(true));
-      // ref.read(setAuthenticatedUserProvider(response));
       return const Right(true);
     }
   }

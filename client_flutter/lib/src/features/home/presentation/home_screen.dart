@@ -19,7 +19,7 @@ class HomeScreen extends ConsumerWidget {
           ?
           // Text("HI")
           AsyncValueWidget(
-              value: ref.watch(fetchCollectionsProvider(ref)),
+              value: ref.watch(fetchCollectionsProvider),
               data: (data) {
                 return ListView.builder(
                   itemCount: data.length,

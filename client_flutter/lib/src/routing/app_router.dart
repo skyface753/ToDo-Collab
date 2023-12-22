@@ -1,5 +1,5 @@
 import 'package:client_flutter/src/core/data/auth_repository.dart';
-import 'package:client_flutter/src/features/home_screen.dart';
+import 'package:client_flutter/src/features/home/presentation/home_screen.dart';
 import 'package:client_flutter/src/features/login/presentation/login_screen.dart';
 import 'package:client_flutter/src/utils/logger.dart';
 import 'package:flutter/material.dart';
