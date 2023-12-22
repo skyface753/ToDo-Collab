@@ -30,8 +30,6 @@ def add_user_to_collection(request: Request, member: MembersModel, logged_in_use
     exists = member_crud.find_by_user_name_and_collection_id(
         member.user_name, member.collection_id)
     if exists:
-        # url = str(request.url_for('collection',
-        #           collection_id=member.collection_id))
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail='User is already a member of this collection')
     return member_crud.create(member)

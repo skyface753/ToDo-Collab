@@ -71,7 +71,7 @@ $('#create-collection-form').submit(function (event) {
       window.location.href = '/collection/' + data.id;
     },
     error: function (xhr, textStatus, error) {
-      errorMsg = 'Something went wrong';
+      let errorMsg = 'Something went wrong';
       console.log(xhr.responseText);
       console.log(error);
       if (error === 'Unprocessable Entity') {

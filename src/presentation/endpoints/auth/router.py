@@ -1,7 +1,6 @@
 from fastapi import APIRouter, status, Request, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
-import src.logic.user as user_logic
 
 router = APIRouter()
 
@@ -22,6 +21,6 @@ def register_page(request: Request):
 def logout(response: Response, request: Request):
     rsp = RedirectResponse(request.url_for(
         'login'), status_code=status.HTTP_303_SEE_OTHER)
-    rsp = user_logic.logout(rsp)
+    rsp.delete_cookie('access-token')
     rsp.delete_cookie('access-token')
     return rsp

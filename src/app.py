@@ -22,11 +22,6 @@ app = FastAPI()
 app.mount('/static', StaticFiles(directory='src/presentation/static'), name='static')
 
 
-# @app.get('/protected')
-# def protected_route(user=Depends(auth_manager)):
-#     return {'user': json_util.dumps(user)}
-
-
 @app.get('/')
 def get(request: Request, user=Depends(auth_manager.optional)):
     """ Redirect to the todo page """
@@ -62,9 +57,6 @@ def auth_exception_handler(request: Request, exc: NotAuthenticatedException):
         return JSONResponse(content={'message': 'Not authenticated'}, status_code=status.HTTP_401_UNAUTHORIZED)
     else:
         return RedirectResponse(url=request.url_for('login'))
-    # return RedirectResponse(url=request.url_for('login'))
-    # print("HI")
-    # return Response(status_code=status.HTTP_401_UNAUTHORIZED)
 
 
 @app.exception_handler(RequestValidationError)

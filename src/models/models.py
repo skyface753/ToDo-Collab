@@ -20,7 +20,7 @@ class CreateTodoModel(BaseModel):
             'example': {
                 'title': 'Do the dishes',
                 'description': 'Its your turn to do the dishes.',
-                'user_name': 'User Name',
+                'user_name': 'User Name',  # NOSONAR
                 'collection_id': uuid.uuid4(),
             },
         },
@@ -51,7 +51,7 @@ class UserModel(BaseModel):
         arbitrary_types_allowed=True,
         json_schema_extra={
             'example': {
-                'name': 'User Name',
+                'name': 'User Name',  # NOSONAR
                 'password': 'Your super secret password',
             },
         },
@@ -124,7 +124,7 @@ class MembersModel(BaseModel):
         arbitrary_types_allowed=True,
         json_schema_extra={
             'example': {
-                'user_name': 'User Name',
+                'user_name': 'User Name',  # NOSONAR
                 'collection_id': uuid.uuid4(),
             },
         },

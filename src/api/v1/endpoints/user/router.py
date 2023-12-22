@@ -18,7 +18,6 @@ def login(request: Request, login_user: UserModel, remember: bool = False):
     user = query_user(login_user.name)
     if not user or not bcrypt.checkpw(bytes(login_user.password, 'utf-8'),
                                       bytes(user.password, 'utf-8')):
-        # return Response(status_code=status.HTTP_401_UNAUTHORIZED)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='Invalid username or password')
 
@@ -67,5 +66,5 @@ def delete_account(user=Depends(auth_manager)):
 
 @router.post('/logout', status_code=status.HTTP_200_OK)
 def logout(response: Response):
-    rsp = user_logic.logout(response)
-    return rsp
+    response.delete_cookie('access-token')
+    return {'message': 'Logged out'}
