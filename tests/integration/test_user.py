@@ -3,7 +3,6 @@ from src.models.models import UserModel
 
 
 def test_user_create_read_update_delete():
-    print('HI')
     username = 'test_user'
     password = 'test_password'
     user = UserModel(name=username, password=password)

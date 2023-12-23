@@ -21,6 +21,9 @@ stages:
       json:
         name: '{collection_name:s}'
         id: '{collection_id:s}'
+        created_at: !anything
+        updated_at: !anything
+        websocket_url: null
         todos: []
   - name: Get my collections
     request:
@@ -31,6 +34,8 @@ stages:
       json:
         - name: '{collection_name:s}'
           id: '{collection_id:s}'
+          created_at: !anything
+          updated_at: !anything
   - type: ref
     id: register_not_member_user
   - type: ref

@@ -38,7 +38,9 @@ class UserRepository {
         final userMap = response.data!['user'] as Map<String, dynamic>;
         return User.fromJson(userMap);
       } else {
-        return ErrorResponse.fromJson(response.data as Map<String, dynamic>);
+        if (response.data != null) {
+          return ErrorResponse.fromJson(response.data!);
+        }
       }
     } on DioException catch (ex) {
       return ErrorResponse.fromJson(ex.response?.data as Map<String, dynamic>);

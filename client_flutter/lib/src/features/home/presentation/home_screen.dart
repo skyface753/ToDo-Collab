@@ -17,16 +17,29 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Home Screen'),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          CreateCollectionOverlay(
+            context: context,
+            ref: ref,
+          ).show();
+        },
+        child: const Icon(Icons.add),
+      ),
       body: isAuth
-          ?
-          // Text("HI")
-          AsyncValueWidget(
-              value: ref.watch(fetchCollectionsProvider),
-              data: (data) {
-                return ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
+          ? RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(fetchCollectionsProvider);
+              },
+              child:
+                  // Text("HI")
+                  AsyncValueWidget(
+                value: ref.watch(fetchCollectionsProvider),
+                data: (data) {
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
                         title: Text(data[index].id),
                         subtitle: Text(data[index].name),
                         onTap: () {
@@ -36,12 +49,73 @@ class HomeScreen extends ConsumerWidget {
                               Parameter.id.name: data[index].id,
                             },
                           );
-                        });
-                  },
-                );
-              },
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             )
           : const Text('Not Authenticated'),
+    );
+  }
+}
+
+class CreateCollectionOverlay {
+  CreateCollectionOverlay({
+    required this.context,
+    required this.ref,
+  });
+
+  final BuildContext context;
+  final WidgetRef ref;
+  final TextEditingController _nameController = TextEditingController();
+
+  Future<void> show() async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Create Collection'),
+          content: TextField(
+            controller: _nameController,
+            decoration: const InputDecoration(
+              labelText: 'Name',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final name = _nameController.text;
+                if (name.isNotEmpty) {
+                  try {
+                    await ref
+                        .read(collectionRepositoryProvider)
+                        .createCollection(name);
+                    ref.invalidate(fetchCollectionsProvider);
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('Create'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

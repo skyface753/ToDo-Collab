@@ -56,7 +56,6 @@ def find_by_user_name_and_collection_id(user_name: str, collection_id: str) \
         'SELECT * FROM members WHERE user_name = %s AND collection_id = %s',
         (user_name, collection_id))
     for result in results:
-        print(result)
         return MembersModel(user_name=result.user_name, collection_id=result.collection_id)
     return None
 

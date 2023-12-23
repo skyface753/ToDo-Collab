@@ -63,6 +63,7 @@ class CollectionRepository {
     try {
       final response = await dio.get<Map<String, dynamic>>(
         _getCollectionUrl(id: collectionId),
+        queryParameters: {'generate_websocket_url': true},
       );
       logger.d('response: $response');
       if (response.statusCode == 200 && response.data != null) {
@@ -76,6 +77,28 @@ class CollectionRepository {
     } catch (e) {
       logger.e('collection_repository.getCollection: $e');
       throw ApiException(-1, 'getCollection $e');
+    }
+  }
+
+  Future<Collection> createCollection(String name) async {
+    logger.d('collection_repository.createCollection');
+    try {
+      final response = await dio.post<Map<String, dynamic>>(
+        _getCollectionUrl(),
+        data: {'name': name},
+      );
+      logger.d('response: $response');
+      if (response.statusCode == 201 && response.data != null) {
+        return Collection.fromJson(response.data!);
+      } else {
+        throw ApiException(
+          response.statusCode ?? -1,
+          'createCollection ${response.statusCode}, data=${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.e('collection_repository.createCollection: $e');
+      throw ApiException(-1, 'createCollection $e');
     }
   }
 }

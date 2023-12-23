@@ -22,6 +22,12 @@ Collection _$CollectionFromJson(Map<String, dynamic> json) {
 mixin _$Collection {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  String get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  String get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'websocket_url')
+  String? get websocketUrl => throw _privateConstructorUsedError;
   List<Todo>? get todos => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +42,13 @@ abstract class $CollectionCopyWith<$Res> {
           Collection value, $Res Function(Collection) then) =
       _$CollectionCopyWithImpl<$Res, Collection>;
   @useResult
-  $Res call({String id, String name, List<Todo>? todos});
+  $Res call(
+      {String id,
+      String name,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt,
+      @JsonKey(name: 'websocket_url') String? websocketUrl,
+      List<Todo>? todos});
 }
 
 /// @nodoc
@@ -54,6 +66,9 @@ class _$CollectionCopyWithImpl<$Res, $Val extends Collection>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? websocketUrl = freezed,
     Object? todos = freezed,
   }) {
     return _then(_value.copyWith(
@@ -65,6 +80,18 @@ class _$CollectionCopyWithImpl<$Res, $Val extends Collection>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      websocketUrl: freezed == websocketUrl
+          ? _value.websocketUrl
+          : websocketUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       todos: freezed == todos
           ? _value.todos
           : todos // ignore: cast_nullable_to_non_nullable
@@ -81,7 +108,13 @@ abstract class _$$CollectionImplCopyWith<$Res>
       __$$CollectionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, List<Todo>? todos});
+  $Res call(
+      {String id,
+      String name,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt,
+      @JsonKey(name: 'websocket_url') String? websocketUrl,
+      List<Todo>? todos});
 }
 
 /// @nodoc
@@ -97,6 +130,9 @@ class __$$CollectionImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? websocketUrl = freezed,
     Object? todos = freezed,
   }) {
     return _then(_$CollectionImpl(
@@ -108,6 +144,18 @@ class __$$CollectionImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      websocketUrl: freezed == websocketUrl
+          ? _value.websocketUrl
+          : websocketUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       todos: freezed == todos
           ? _value._todos
           : todos // ignore: cast_nullable_to_non_nullable
@@ -120,7 +168,12 @@ class __$$CollectionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CollectionImpl implements _Collection {
   const _$CollectionImpl(
-      {required this.id, required this.name, final List<Todo>? todos})
+      {required this.id,
+      required this.name,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt,
+      @JsonKey(name: 'websocket_url') this.websocketUrl,
+      final List<Todo>? todos})
       : _todos = todos;
 
   factory _$CollectionImpl.fromJson(Map<String, dynamic> json) =>
@@ -130,6 +183,15 @@ class _$CollectionImpl implements _Collection {
   final String id;
   @override
   final String name;
+  @override
+  @JsonKey(name: 'created_at')
+  final String createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  final String updatedAt;
+  @override
+  @JsonKey(name: 'websocket_url')
+  final String? websocketUrl;
   final List<Todo>? _todos;
   @override
   List<Todo>? get todos {
@@ -142,7 +204,7 @@ class _$CollectionImpl implements _Collection {
 
   @override
   String toString() {
-    return 'Collection(id: $id, name: $name, todos: $todos)';
+    return 'Collection(id: $id, name: $name, createdAt: $createdAt, updatedAt: $updatedAt, websocketUrl: $websocketUrl, todos: $todos)';
   }
 
   @override
@@ -152,13 +214,19 @@ class _$CollectionImpl implements _Collection {
             other is _$CollectionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.websocketUrl, websocketUrl) ||
+                other.websocketUrl == websocketUrl) &&
             const DeepCollectionEquality().equals(other._todos, _todos));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, const DeepCollectionEquality().hash(_todos));
+  int get hashCode => Object.hash(runtimeType, id, name, createdAt, updatedAt,
+      websocketUrl, const DeepCollectionEquality().hash(_todos));
 
   @JsonKey(ignore: true)
   @override
@@ -178,6 +246,9 @@ abstract class _Collection implements Collection {
   const factory _Collection(
       {required final String id,
       required final String name,
+      @JsonKey(name: 'created_at') required final String createdAt,
+      @JsonKey(name: 'updated_at') required final String updatedAt,
+      @JsonKey(name: 'websocket_url') final String? websocketUrl,
       final List<Todo>? todos}) = _$CollectionImpl;
 
   factory _Collection.fromJson(Map<String, dynamic> json) =
@@ -187,6 +258,15 @@ abstract class _Collection implements Collection {
   String get id;
   @override
   String get name;
+  @override
+  @JsonKey(name: 'created_at')
+  String get createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  String get updatedAt;
+  @override
+  @JsonKey(name: 'websocket_url')
+  String? get websocketUrl;
   @override
   List<Todo>? get todos;
   @override
@@ -204,6 +284,10 @@ mixin _$Todo {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  String get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  String get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_name')
   String get userName => throw _privateConstructorUsedError;
   @JsonKey(name: 'collection_id')
@@ -223,6 +307,8 @@ abstract class $TodoCopyWith<$Res> {
       {String id,
       String title,
       String description,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt,
       @JsonKey(name: 'user_name') String userName,
       @JsonKey(name: 'collection_id') String collectionId});
 }
@@ -243,6 +329,8 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? id = null,
     Object? title = null,
     Object? description = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
     Object? userName = null,
     Object? collectionId = null,
   }) {
@@ -258,6 +346,14 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
       userName: null == userName
           ? _value.userName
@@ -282,6 +378,8 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       {String id,
       String title,
       String description,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt,
       @JsonKey(name: 'user_name') String userName,
       @JsonKey(name: 'collection_id') String collectionId});
 }
@@ -299,6 +397,8 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
     Object? userName = null,
     Object? collectionId = null,
   }) {
@@ -314,6 +414,14 @@ class __$$TodoImplCopyWithImpl<$Res>
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
       userName: null == userName
           ? _value.userName
@@ -334,6 +442,8 @@ class _$TodoImpl implements _Todo {
       {required this.id,
       required this.title,
       required this.description,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt,
       @JsonKey(name: 'user_name') required this.userName,
       @JsonKey(name: 'collection_id') required this.collectionId});
 
@@ -347,6 +457,12 @@ class _$TodoImpl implements _Todo {
   @override
   final String description;
   @override
+  @JsonKey(name: 'created_at')
+  final String createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  final String updatedAt;
+  @override
   @JsonKey(name: 'user_name')
   final String userName;
   @override
@@ -355,7 +471,7 @@ class _$TodoImpl implements _Todo {
 
   @override
   String toString() {
-    return 'Todo(id: $id, title: $title, description: $description, userName: $userName, collectionId: $collectionId)';
+    return 'Todo(id: $id, title: $title, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, userName: $userName, collectionId: $collectionId)';
   }
 
   @override
@@ -367,6 +483,10 @@ class _$TodoImpl implements _Todo {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
             (identical(other.collectionId, collectionId) ||
@@ -375,8 +495,8 @@ class _$TodoImpl implements _Todo {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, description, userName, collectionId);
+  int get hashCode => Object.hash(runtimeType, id, title, description,
+      createdAt, updatedAt, userName, collectionId);
 
   @JsonKey(ignore: true)
   @override
@@ -397,6 +517,8 @@ abstract class _Todo implements Todo {
           {required final String id,
           required final String title,
           required final String description,
+          @JsonKey(name: 'created_at') required final String createdAt,
+          @JsonKey(name: 'updated_at') required final String updatedAt,
           @JsonKey(name: 'user_name') required final String userName,
           @JsonKey(name: 'collection_id') required final String collectionId}) =
       _$TodoImpl;
@@ -409,6 +531,12 @@ abstract class _Todo implements Todo {
   String get title;
   @override
   String get description;
+  @override
+  @JsonKey(name: 'created_at')
+  String get createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  String get updatedAt;
   @override
   @JsonKey(name: 'user_name')
   String get userName;

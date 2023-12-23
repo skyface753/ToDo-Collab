@@ -12,6 +12,7 @@ def find_collections_for_user(user_name: str) -> List[CollectionModel]:
         collection = collection_crud.find_by_id(member.collection_id)
         if collection is not None:
             collections.append(collection)
+    collections.sort(key=lambda x: x.updated_at, reverse=True)
     return collections
 
 

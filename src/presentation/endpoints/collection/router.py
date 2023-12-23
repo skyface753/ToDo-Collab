@@ -26,6 +26,7 @@ async def get_collection(request: Request, collection_id: str,
     if user:
         collection = collection_crud.find_by_id(collection_id)
         todos = todo_crud.find_by_collection_id(collection_id)
+        todos.sort(key=lambda x: x.created_at)
         todos_json = []
         for todo in todos:
             todos_json.append(todo.model_dump_json(by_alias=True))

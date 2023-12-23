@@ -19,6 +19,8 @@ stages:
       json:
         name: '{collection_name:s}'
         id: !anything
+        created_at: !anything
+        updated_at: !anything
       save:
         json:
           collection_id: id

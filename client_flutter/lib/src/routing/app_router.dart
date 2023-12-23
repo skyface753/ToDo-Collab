@@ -26,8 +26,8 @@ enum TopLevelDestinations { home, login, loading }
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.home.name);
-final _loginNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.login.name);
+// final _loginNavigatorKey =
+//     GlobalKey<NavigatorState>(debugLabel: TopLevelDestinations.login.name);
 
 // other destinations, reachable from a top level destination
 // enum SubRoutes { details }

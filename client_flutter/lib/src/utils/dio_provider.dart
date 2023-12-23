@@ -15,7 +15,6 @@ class UnauthorizedInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == 401) {
-      print("Unauthorized Interceptor");
       ref.read(authRepositoryProvider).resetIsAuthenticated();
       // do something
     }

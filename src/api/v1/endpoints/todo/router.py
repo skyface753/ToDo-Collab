@@ -24,7 +24,6 @@ async def websocket_endpoint(websocket: WebSocket, collection_id: str,
                 new_todo = CreateTodoModel(**as_json)
                 created_todo = todo_crud.create(new_todo)
                 created_todo = created_todo.model_dump_json(by_alias=True)
-                print(created_todo)
                 await manager.broadcast(created_todo, collection_id)
             except Exception as e:
                 print(e)

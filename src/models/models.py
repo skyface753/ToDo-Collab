@@ -1,5 +1,7 @@
 from pydantic import ConfigDict, BaseModel, Field, field_serializer
+from typing import Optional
 import uuid
+from datetime import datetime
 
 
 class CreateTodoModel(BaseModel):
@@ -13,6 +15,7 @@ class CreateTodoModel(BaseModel):
     user_name: str = Field(...)
     # Relation to the collection
     collection_id: uuid.UUID = Field(...)
+    # Created and updated timestamps with default values
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -29,6 +32,8 @@ class CreateTodoModel(BaseModel):
 
 class TodoModel(CreateTodoModel):
     id: uuid.UUID = Field(...)
+    created_at: datetime = Field(...)
+    updated_at: datetime = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -86,6 +91,8 @@ class CollectionModel(CreateCollectionModel):
     """
 
     id: uuid.UUID = Field(...)
+    created_at: datetime = Field(...)
+    updated_at: datetime = Field(...)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -102,6 +109,7 @@ class CollectionModelWithTodos(CollectionModel):
     """
 
     todos: list[TodoModel] = Field(...)
+    websocket_url: Optional[str] = Field(None)
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
