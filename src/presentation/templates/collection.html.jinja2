@@ -45,7 +45,7 @@
     <input type="hidden" id="token" value="{{token}}" />
     <input type="hidden" id="websocket_url" value="{{websocket_url}}" />
     <h1>{{collection.name}}</h1>
-    <h2>Your ID: <span id="ws-id"> {{user.name}} </span></h2>
+    <h2>Your Name: <span id="ws-id"> {{user.name}} </span></h2>
     {# <h2>Collection: {{collection.name}}</h2> #}
     <form action="" onsubmit="sendMessage(event)">
       {# Message Input #}
@@ -69,7 +69,7 @@
         type="text"
         id="user_name_to_add"
         autocomplete="off"
-        placeholder="User ID"
+        placeholder="User Name"
       />
       <button class="btn-secondary">Add to {{collection.id}}</button>
     </form>

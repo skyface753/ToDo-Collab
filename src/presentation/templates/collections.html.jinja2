@@ -46,6 +46,7 @@
     onclick="window.location.href='{{url_for('collection', collection_id=collection.id)}}'"
   >
     <h1>{{ collection.name }}</h1>
+    <p>Last updated: {{ collection.updated_at.strftime('%d %B %Y') }}</p>
   </article>
   {% endfor %}
 </section>

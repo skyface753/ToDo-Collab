@@ -78,7 +78,7 @@ header,
 
 .items {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
 }
 
 /* Pizza is clickable */
